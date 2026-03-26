@@ -691,6 +691,457 @@
   .footer a { color: rgba(255,255,255,.65); text-decoration: none; margin: 0 8px; }
   .footer a:hover { color: white; }
   .footer .social { display: flex; justify-content: center; gap: 14px; margin-top: 6px; font-size: 14px; }
+
+  /* ══════════════════════════════
+     COMUNIDAD & MENTORÍA
+  ══════════════════════════════ */
+
+  /* Tabs */
+  .tab-bar {
+    display: flex; gap: 0;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 22px;
+  }
+  .tab-btn {
+    padding: 10px 20px; font-size: 13px; font-weight: 700;
+    color: var(--text-light); background: none; border: none;
+    cursor: pointer; border-bottom: 3px solid transparent;
+    margin-bottom: -2px; font-family: 'Montserrat', sans-serif;
+    transition: all .18s;
+  }
+  .tab-btn:hover { color: var(--blue-brand); }
+  .tab-btn.active { color: var(--navy-deep); border-bottom-color: var(--blue-brand); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Feed */
+  .post-box {
+    background: white; border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px 16px; margin-bottom: 10px;
+    display: flex; gap: 12px;
+  }
+  .post-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy-deep), var(--blue-brand));
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 15px; font-weight: 700;
+    flex-shrink: 0; font-family: 'Montserrat', sans-serif;
+  }
+  .post-body { flex: 1; }
+  .post-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .post-meta strong { font-size: 13px; font-weight: 700; color: var(--navy-deep); font-family: 'Montserrat', sans-serif; }
+  .post-meta span { font-size: 11px; color: var(--gray-mid); }
+  .post-body p { font-size: 13px; color: var(--text-light); line-height: 1.6; }
+  .post-actions { display: flex; gap: 14px; margin-top: 9px; }
+  .post-act {
+    background: none; border: none; cursor: pointer;
+    font-size: 12px; color: var(--gray-mid); font-family: 'Open Sans', sans-serif;
+    display: flex; align-items: center; gap: 4px; transition: color .18s;
+  }
+  .post-act:hover { color: var(--blue-brand); }
+  .new-post-box {
+    background: white; border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px 16px; margin-bottom: 16px; display: flex; gap: 12px; align-items: center;
+  }
+  .new-post-box input {
+    flex: 1; border: 1.5px solid var(--border); border-radius: 20px;
+    padding: 9px 16px; font-size: 13px; font-family: 'Open Sans', sans-serif;
+    outline: none; color: var(--text); transition: border .18s;
+  }
+  .new-post-box input:focus { border-color: var(--blue-brand); }
+  .btn-post {
+    background: var(--blue-brand); color: white; border: none;
+    border-radius: 20px; padding: 9px 18px; font-size: 12.5px;
+    font-weight: 700; cursor: pointer; font-family: 'Montserrat', sans-serif;
+    white-space: nowrap;
+  }
+  .btn-post:hover { background: var(--blue-accent); }
+
+  /* Q&A */
+  .qa-item {
+    background: white; border: 1px solid var(--border); border-radius: 8px;
+    margin-bottom: 10px; overflow: hidden; cursor: pointer;
+    transition: border .18s;
+  }
+  .qa-item:hover { border-color: var(--blue-brand); }
+  .qa-q {
+    padding: 13px 16px; display: flex; gap: 10px; align-items: flex-start;
+  }
+  .qa-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .qa-q strong { display: block; font-size: 13px; font-weight: 700; color: var(--navy-deep); margin-bottom: 3px; font-family: 'Montserrat', sans-serif; }
+  .qa-q p { font-size: 12px; color: var(--text-light); }
+  .qa-meta { display: flex; gap: 10px; margin-top: 6px; }
+  .qa-meta span { font-size: 11px; color: var(--gray-mid); }
+  .qa-badge {
+    margin-left: auto; background: var(--green-bg); color: var(--green);
+    font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+    align-self: flex-start; font-family: 'Montserrat', sans-serif;
+    white-space: nowrap;
+  }
+  .qa-badge.open { background: #fff8e0; color: #b86000; }
+
+  /* Directorio */
+  .members-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 12px; margin-bottom: 20px;
+  }
+  .member-card {
+    background: white; border: 1px solid var(--border); border-radius: 8px;
+    padding: 18px 14px; text-align: center; cursor: pointer;
+    transition: all .2s;
+  }
+  .member-card:hover { border-color: var(--blue-brand); box-shadow: 0 4px 14px rgba(58,143,212,.13); }
+  .member-avatar {
+    width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 800; color: white; font-family: 'Montserrat', sans-serif;
+  }
+  .member-card h4 { font-size: 13px; font-weight: 700; color: var(--navy-deep); font-family: 'Montserrat', sans-serif; margin-bottom: 3px; }
+  .member-card p { font-size: 11.5px; color: var(--text-light); margin-bottom: 8px; }
+  .member-role {
+    display: inline-block; padding: 2px 9px; border-radius: 10px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .role-impo { background: #ddeeff; color: var(--blue-accent); }
+  .role-expo { background: var(--green-bg); color: var(--green); }
+  .role-despa { background: #f0e8fb; color: #7c3aed; }
+  .role-profe { background: #fff0e0; color: #b85000; }
+
+  /* Recursos */
+  .resource-item {
+    background: white; border: 1px solid var(--border); border-radius: 7px;
+    padding: 12px 16px; margin-bottom: 9px; display: flex;
+    gap: 12px; align-items: center; cursor: pointer; transition: border .18s;
+  }
+  .resource-item:hover { border-color: var(--blue-brand); }
+  .res-icon {
+    width: 40px; height: 40px; border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .res-info { flex: 1; }
+  .res-info strong { display: block; font-size: 13px; font-weight: 700; color: var(--navy-deep); font-family: 'Montserrat', sans-serif; margin-bottom: 2px; }
+  .res-info span { font-size: 11.5px; color: var(--text-light); }
+  .res-dl {
+    background: none; border: 1.5px solid var(--blue-brand); color: var(--blue-brand);
+    border-radius: 4px; padding: 5px 12px; font-size: 11.5px; font-weight: 700;
+    cursor: pointer; font-family: 'Montserrat', sans-serif; white-space: nowrap;
+    transition: all .18s;
+  }
+  .res-dl:hover { background: var(--blue-brand); color: white; }
+
+  /* Mentoría */
+  .mentoria-hero {
+    background: linear-gradient(120deg, var(--navy-nav) 0%, var(--navy-deep) 50%, #1e5fa0 100%);
+    padding: 32px 28px; color: white; border-radius: 8px; margin-bottom: 22px;
+    position: relative; overflow: hidden;
+  }
+  .mentoria-hero h2 { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .mentoria-hero p { font-size: 13.5px; opacity: .8; max-width: 500px; }
+  .mentoria-hero .mh-deco {
+    position: absolute; right: -30px; top: -30px; width: 180px; height: 180px;
+    border-radius: 50%; border: 1px solid rgba(90,180,240,.2); pointer-events: none;
+  }
+  .plan-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px; margin-bottom: 26px;
+  }
+  .plan-card {
+    background: white; border: 2px solid var(--border); border-radius: 10px;
+    padding: 22px 20px; cursor: pointer; transition: all .2s; position: relative;
+  }
+  .plan-card:hover { border-color: var(--blue-brand); box-shadow: 0 6px 20px rgba(58,143,212,.15); transform: translateY(-2px); }
+  .plan-card.featured { border-color: var(--blue-brand); }
+  .plan-badge {
+    position: absolute; top: -10px; left: 20px;
+    background: var(--blue-brand); color: white;
+    font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 10px;
+    font-family: 'Montserrat', sans-serif; letter-spacing: .4px;
+  }
+  .plan-icon { font-size: 30px; margin-bottom: 10px; }
+  .plan-card h3 { font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 700; color: var(--navy-deep); margin-bottom: 6px; }
+  .plan-card p { font-size: 12.5px; color: var(--text-light); line-height: 1.6; margin-bottom: 14px; }
+  .plan-features { list-style: none; margin-bottom: 18px; }
+  .plan-features li { font-size: 12px; color: var(--text-light); padding: 4px 0; border-bottom: 1px solid var(--border); display: flex; gap: 7px; align-items: flex-start; }
+  .plan-features li:last-child { border: none; }
+  .plan-features li::before { content: "✓"; color: var(--blue-brand); font-weight: 700; font-size: 12px; flex-shrink: 0; }
+  .btn-plan {
+    display: block; width: 100%; background: var(--navy-deep); color: white;
+    border: none; border-radius: 5px; padding: 10px; font-size: 13px;
+    font-weight: 700; cursor: pointer; font-family: 'Montserrat', sans-serif;
+    text-align: center; transition: background .2s;
+  }
+  .btn-plan:hover { background: var(--blue-accent); }
+  .btn-plan.outline {
+    background: none; border: 2px solid var(--navy-deep); color: var(--navy-deep);
+  }
+  .btn-plan.outline:hover { background: var(--navy-deep); color: white; }
+
+  /* Agenda / Sesiones */
+  .session-item {
+    background: white; border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px 16px; margin-bottom: 10px; display: flex;
+    gap: 14px; align-items: center;
+  }
+  .session-date {
+    background: var(--navy-deep); color: white; border-radius: 7px;
+    padding: 8px 12px; text-align: center; flex-shrink: 0; min-width: 52px;
+  }
+  .session-date .day { font-size: 20px; font-weight: 800; font-family: 'Montserrat', sans-serif; line-height: 1; }
+  .session-date .month { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; opacity: .8; }
+  .session-info { flex: 1; }
+  .session-info h4 { font-size: 13.5px; font-weight: 700; color: var(--navy-deep); font-family: 'Montserrat', sans-serif; margin-bottom: 3px; }
+  .session-info p { font-size: 12px; color: var(--text-light); }
+  .session-status {
+    font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 10px;
+    font-family: 'Montserrat', sans-serif; white-space: nowrap;
+  }
+  .status-open { background: var(--green-bg); color: var(--green); }
+  .status-full { background: #ffe5e5; color: var(--red); }
+  .status-soon { background: #fff8e0; color: #b86000; }
+
+  /* Testimonios */
+  .testi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .testi-card {
+    background: white; border: 1px solid var(--border); border-radius: 8px;
+    padding: 16px; border-left: 3px solid var(--blue-brand);
+  }
+  .testi-card p { font-size: 12.5px; color: var(--text-light); line-height: 1.65; font-style: italic; margin-bottom: 10px; }
+  .testi-author { display: flex; gap: 8px; align-items: center; }
+  .testi-av {
+    width: 30px; height: 30px; border-radius: 50%; font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; color: white;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .testi-author strong { font-size: 12px; font-weight: 700; color: var(--navy-deep); font-family: 'Montserrat', sans-serif; }
+  .testi-author span { font-size: 11px; color: var(--gray-mid); }
+
+  /* Sidebar mentoría */
+  .mentor-profile {
+    background: linear-gradient(135deg, var(--navy-deep), var(--navy-mid));
+    border-radius: 8px; padding: 18px; text-align: center; margin-bottom: 16px; color: white;
+  }
+  .mentor-avatar {
+    width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 10px;
+    background: var(--blue-brand); display: flex; align-items: center;
+    justify-content: center; font-size: 24px; font-weight: 800;
+    font-family: 'Montserrat', sans-serif; border: 2px solid rgba(255,255,255,.3);
+  }
+  .mentor-profile h4 { font-size: 14px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-bottom: 3px; }
+  .mentor-profile p { font-size: 11.5px; opacity: .75; margin-bottom: 12px; }
+  .btn-contact {
+    display: block; background: white; color: var(--navy-deep);
+    border: none; border-radius: 5px; padding: 8px; font-size: 12.5px;
+    font-weight: 700; cursor: pointer; font-family: 'Montserrat', sans-serif; width: 100%;
+    transition: background .2s;
+  }
+  .btn-contact:hover { background: var(--blue-pale); }
+
+  /* ══════════════════════════════════════════════
+     RESPONSIVE — MOBILE FIRST (max 768px)
+  ══════════════════════════════════════════════ */
+  @media (max-width: 768px) {
+
+    /* ── Proto nav ── */
+    .proto-nav { padding: 6px 10px; gap: 4px; }
+    .proto-btn { padding: 3px 7px; font-size: 10px; }
+    .proto-nav .label { display: none; }
+
+    /* ── Topbar ── */
+    .topbar { height: 50px; padding: 0 14px; }
+    .logo-text .n365 { font-size: 12px; }
+    .logo-text .brand { font-size: 14px; }
+    .logo-icon { width: 28px; height: 28px; }
+    .btn-wp span, .user-chip { display: none; }
+    .btn-wp { padding: 6px 10px; font-size: 0; gap: 0; }
+    .btn-wp svg { width: 16px; height: 16px; }
+
+    /* ── Main nav ── */
+    .mainnav { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .mainnav::-webkit-scrollbar { height: 2px; }
+    .mainnav ul { flex-wrap: nowrap; padding: 0 10px; min-width: max-content; }
+    .mainnav ul li a { padding: 9px 10px; font-size: 10.5px; letter-spacing: .2px; }
+
+    /* ── Search bar ── */
+    .searchbar { padding: 8px 12px; gap: 8px; }
+    .searchbar input { font-size: 13px; padding: 8px 12px; }
+    .searchbar button { padding: 8px 12px; font-size: 11px; }
+
+    /* ── Main layout: sidebar goes below content ── */
+    .main-wrap { flex-direction: column; }
+    .content-area { padding: 16px 14px; }
+    .sidebar {
+      width: 100%;
+      border-left: none;
+      border-top: 2px solid var(--border);
+      padding: 16px 14px;
+    }
+
+    /* ── LOGIN ── */
+    .login-wrap { flex-direction: column; }
+    .login-hero {
+      padding: 28px 20px;
+      min-height: auto;
+    }
+    .login-hero h1 { font-size: 22px; margin-bottom: 8px; }
+    .login-hero .sub { font-size: 13px; margin-bottom: 20px; }
+    .promo-cards { gap: 10px; }
+    .promo-card { padding: 10px 12px; }
+    .promo-card h4 { font-size: 12px; }
+    .promo-card p { font-size: 11px; }
+    .login-panel {
+      width: 100%;
+      border-left: none;
+      border-top: 4px solid var(--blue-brand);
+      box-shadow: none;
+      padding: 28px 20px;
+    }
+
+    /* ── HERO SLIDER ── */
+    .hero-slider { height: 200px; }
+    .slide-content { padding: 0 20px; max-width: 100%; }
+    .slide-content h2 { font-size: 18px; margin-bottom: 6px; }
+    .slide-content p { font-size: 12.5px; margin-bottom: 12px; }
+    .btn-slide { padding: 7px 14px; font-size: 12px; }
+    .slider-arrow { width: 28px; height: 28px; font-size: 13px; }
+
+    /* ── CARDS GRIDS ── */
+    .cards-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .card { padding: 12px 8px; }
+    .card-icon { width: 36px; height: 36px; font-size: 18px; margin-bottom: 7px; }
+    .card h4 { font-size: 11px; }
+
+    .content-cards { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .content-card { padding: 14px 12px; }
+
+    .course-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .course-thumb { height: 72px; font-size: 28px; }
+    .course-body { padding: 10px 12px; }
+    .course-body h4 { font-size: 12px; }
+    .course-body p { font-size: 11px; }
+
+    /* ── SECTION HEADERS ── */
+    .sec-header h2 { font-size: 13.5px; }
+    .sec-header a { font-size: 11.5px; }
+
+    /* ── ALERT BOX ── */
+    .alert-box { padding: 10px 12px; }
+    .alert-box p { font-size: 12px; }
+
+    /* ── NOVEDADES ── */
+    .novedad { padding: 11px 12px; gap: 10px; }
+    .novedad h4 { font-size: 12.5px; }
+    .novedad p { font-size: 11.5px; }
+
+    /* ── MÁS VISTOS ── */
+    .mv-num { font-size: 16px; width: 20px; }
+    .mv-title { font-size: 12.5px; }
+    .mv-cat { font-size: 11px; }
+
+    /* ── TALLER CARDS SIDEBAR ── */
+    .taller-card { padding: 10px 12px; }
+    .taller-card h4 { font-size: 12px; }
+
+    /* ── DETAIL SCREEN ── */
+    .detail-wrap { flex-direction: column; }
+    .detail-sidebar {
+      width: 100%;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+    .detail-sidebar ul li a { padding: 8px 16px; font-size: 13px; }
+    .detail-content { padding: 16px 14px; }
+    .detail-content h2 { font-size: 18px; }
+    .doc-box { padding: 16px; }
+    .doc-box h3 { font-size: 13px; }
+    .doc-box p { font-size: 13px; }
+    .doc-meta { flex-direction: column; gap: 5px; }
+    .btn-dl { padding: 8px 14px; font-size: 12.5px; }
+
+    /* ── COMUNIDAD ── */
+    .tab-bar { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+    .tab-bar::-webkit-scrollbar { height: 2px; }
+    .tab-btn { white-space: nowrap; padding: 9px 12px; font-size: 12px; }
+    .new-post-box { padding: 10px 12px; gap: 8px; }
+    .new-post-box input { font-size: 12.5px; }
+    .btn-post { font-size: 12px; padding: 8px 12px; }
+    .post-box { padding: 12px; gap: 10px; }
+    .post-avatar { width: 32px; height: 32px; font-size: 13px; flex-shrink: 0; }
+    .post-meta strong { font-size: 12.5px; }
+    .post-meta span { font-size: 11px; }
+    .post-body p { font-size: 12.5px; }
+    .post-actions { gap: 10px; }
+    .post-act { font-size: 11.5px; }
+
+    .qa-item .qa-q { padding: 12px 12px; gap: 8px; }
+    .qa-q strong { font-size: 12.5px; }
+    .qa-q p { font-size: 11.5px; }
+    .qa-meta span { font-size: 10.5px; }
+    .qa-badge { font-size: 9.5px; padding: 2px 7px; }
+
+    .members-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .member-card { padding: 14px 10px; }
+    .member-avatar { width: 44px; height: 44px; font-size: 17px; }
+    .member-card h4 { font-size: 12px; }
+    .member-card p { font-size: 11px; }
+
+    .resource-item { padding: 10px 12px; gap: 10px; }
+    .res-icon { width: 34px; height: 34px; font-size: 17px; }
+    .res-info strong { font-size: 12.5px; }
+    .res-info span { font-size: 11px; }
+    .res-dl { padding: 5px 10px; font-size: 11px; }
+
+    /* ── MENTORÍA ── */
+    .mentoria-hero { padding: 22px 16px; border-radius: 7px; margin-bottom: 18px; }
+    .mentoria-hero h2 { font-size: 16px; margin-bottom: 6px; }
+    .mentoria-hero p { font-size: 13px; }
+
+    .plan-grid { grid-template-columns: 1fr; gap: 14px; }
+    .plan-card { padding: 18px 16px; }
+    .plan-card h3 { font-size: 14px; }
+    .plan-card p { font-size: 12px; }
+    .plan-features li { font-size: 11.5px; }
+    .btn-plan { font-size: 12.5px; }
+
+    .session-item { padding: 12px; gap: 10px; }
+    .session-date { padding: 6px 10px; min-width: 44px; }
+    .session-date .day { font-size: 17px; }
+    .session-date .month { font-size: 9px; }
+    .session-info h4 { font-size: 12.5px; }
+    .session-info p { font-size: 11px; }
+    .session-status { font-size: 10.5px; padding: 3px 8px; }
+
+    .testi-grid { grid-template-columns: 1fr; gap: 10px; }
+    .testi-card p { font-size: 12px; }
+    .testi-author strong { font-size: 11.5px; }
+
+    .mentor-profile { padding: 16px 14px; }
+    .mentor-avatar { width: 52px; height: 52px; font-size: 20px; }
+    .mentor-profile h4 { font-size: 13px; }
+    .mentor-profile p { font-size: 11.5px; }
+
+    /* ── FOOTER ── */
+    .footer { padding: 14px 12px; font-size: 11.5px; }
+    .footer .social { font-size: 13px; gap: 10px; }
+
+    /* ── PLAN FEATURED BADGE offset fix ── */
+    .plan-card.featured { margin-top: 12px; }
+  }
+
+  /* ── Small phones (max 420px) ── */
+  @media (max-width: 420px) {
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+    .content-cards { grid-template-columns: 1fr; }
+    .course-grid { grid-template-columns: 1fr; }
+    .members-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-slider { height: 220px; }
+    .slide-content h2 { font-size: 16px; }
+    .login-hero h1 { font-size: 20px; }
+    .mainnav ul li a { font-size: 10px; padding: 8px 8px; }
+  }
+
 </style>
 </head>
 <body>
@@ -706,6 +1157,8 @@
   <button class="proto-btn" onclick="goTo(4)">4 · Dashboard</button>
   <button class="proto-btn" onclick="goTo(5)">5 · Contenido</button>
   <button class="proto-btn" onclick="goTo(6)">6 · Detalle</button>
+  <button class="proto-btn" onclick="goTo(7)">7 · Comunidad</button>
+  <button class="proto-btn" onclick="goTo(8)">8 · Mentoría</button>
 </div>
 
 <!-- ════════════════════════════════════════════
@@ -1182,6 +1635,532 @@
 </div>
 
 
+<!-- ════════════════════════════════════════════
+     SCREEN 7 · COMUNIDAD
+════════════════════════════════════════════ -->
+<div class="screen" id="s7">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="logo-wrap" onclick="goTo(1)">
+      <svg class="logo-icon" viewBox="0 0 38 38" fill="none"><rect x="4" y="8" width="22" height="16" rx="2" stroke="#5ab4f0" stroke-width="1.8" fill="none"/><rect x="7" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".7"/><rect x="12" y="11" width="4" height="4" rx=".5" fill="#3a8fd4"/><rect x="17" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".9"/><rect x="7" y="16" width="4" height="4" rx=".5" fill="#3a8fd4" opacity=".8"/><rect x="12" y="16" width="4" height="4" rx=".5" fill="#5ab4f0"/><line x1="11" y1="24" x2="11" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="19" y1="24" x2="19" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="8" y1="28" x2="22" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><rect x="24" y="14" width="10" height="16" rx="1.5" stroke="#5ab4f0" stroke-width="1.5" fill="none"/></svg>
+      <div class="logo-text"><span class="n365">365</span><span class="brand"><span class="aprendo">aprendo</span><span class="comex">ComEx</span></span></div>
+    </div>
+    <div class="topbar-right"><button class="btn-wp">WhatsApp</button><span class="user-chip">Hola, <strong>María</strong></span></div>
+  </div>
+  <div class="mainnav"><ul>
+    <li><a href="#" onclick="goTo(2)">Inicio</a></li>
+    <li><a href="#" onclick="goTo(3)">Mis Cursos</a></li>
+    <li><a href="#" onclick="goTo(4)">Programas e Inscripciones</a></li>
+    <li><a href="#" class="active">Comunidad</a></li>
+    <li><a href="#" onclick="goTo(8)">Mentoría</a></li>
+    <li><a href="#">Notificaciones <span class="notif-dot">3</span></a></li>
+  </ul></div>
+
+  <div class="main-wrap">
+    <div class="content-area">
+      <div class="sec-header" style="margin-bottom:18px">
+        <h2>Comunidad 365aprendoComEx</h2>
+        <span style="font-size:12px;color:var(--gray-mid)">👥 248 miembros activos</span>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab(this,'tab-feed')">📰 Feed</button>
+        <button class="tab-btn" onclick="switchTab(this,'tab-qa')">❓ Preguntas y Respuestas</button>
+        <button class="tab-btn" onclick="switchTab(this,'tab-dir')">👥 Directorio</button>
+        <button class="tab-btn" onclick="switchTab(this,'tab-rec')">📎 Recursos</button>
+      </div>
+
+      <!-- TAB: FEED -->
+      <div class="tab-panel active" id="tab-feed">
+        <div class="new-post-box">
+          <div class="post-avatar">M</div>
+          <input type="text" placeholder="Compartí algo con la comunidad...">
+          <button class="btn-post">Publicar</button>
+        </div>
+
+        <div class="post-box">
+          <div class="post-avatar">LA</div>
+          <div class="post-body">
+            <div class="post-meta">
+              <strong>Laura Acosta</strong>
+              <span>· Importadora · hace 2hs</span>
+            </div>
+            <p>¡Aprobé el examen ATA! 🎉 Gracias a los materiales del curso y a los vivos de los lunes. Si alguien está preparándose, me preguntan sin problema.</p>
+            <div class="post-actions">
+              <button class="post-act">👍 14</button>
+              <button class="post-act">💬 6 comentarios</button>
+              <button class="post-act">↗ Compartir</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="post-box">
+          <div class="post-avatar" style="background:linear-gradient(135deg,#1e5fa0,#5ab4f0)">RC</div>
+          <div class="post-body">
+            <div class="post-meta">
+              <strong>Roberto Castillo</strong>
+              <span>· Despachante · hace 5hs</span>
+            </div>
+            <p>¿Alguien trabajó con la nueva Resolución 2570? Tengo dudas sobre los plazos para presentación de DJA en importaciones de insumos industriales.</p>
+            <div class="post-actions">
+              <button class="post-act">👍 8</button>
+              <button class="post-act">💬 12 comentarios</button>
+              <button class="post-act">↗ Compartir</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="post-box">
+          <div class="post-avatar" style="background:linear-gradient(135deg,#1a7f4b,#3a8fd4)">MP</div>
+          <div class="post-body">
+            <div class="post-meta">
+              <strong>Marcela Pérez</strong>
+              <span>· Exportadora · ayer</span>
+            </div>
+            <p>Comparto el resumen que armé sobre INCOTERMS 2025 del último taller. Espero que les sirva 📄</p>
+            <div class="post-actions">
+              <button class="post-act">👍 32</button>
+              <button class="post-act">💬 9 comentarios</button>
+              <button class="post-act">↗ Compartir</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="post-box">
+          <div class="post-avatar" style="background:linear-gradient(135deg,#7c3aed,#3a8fd4)">GF</div>
+          <div class="post-body">
+            <div class="post-meta">
+              <strong>Gastón Ferreira</strong>
+              <span>· Estudiante · hace 2 días</span>
+            </div>
+            <p>Primera vez que uso el SIM y fue más intuitivo de lo que pensaba. El curso de Práctica SIM te prepara muy bien para la realidad del sistema.</p>
+            <div class="post-actions">
+              <button class="post-act">👍 21</button>
+              <button class="post-act">💬 4 comentarios</button>
+              <button class="post-act">↗ Compartir</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Q&A -->
+      <div class="tab-panel" id="tab-qa">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn-post" style="border-radius:5px">+ Nueva pregunta</button>
+        </div>
+
+        <div class="qa-item">
+          <div class="qa-q">
+            <div class="qa-icon">❓</div>
+            <div style="flex:1">
+              <strong>¿Cuál es el plazo para rectificar una DJA después de presentada?</strong>
+              <p>Presenté una DJA con un error en el código arancelario. ¿Cuánto tiempo tengo para corregirla sin multa?</p>
+              <div class="qa-meta">
+                <span>👤 Laura Acosta</span>
+                <span>· 3 respuestas</span>
+                <span>· hace 1 día</span>
+              </div>
+            </div>
+            <span class="qa-badge">✅ Respondida</span>
+          </div>
+        </div>
+
+        <div class="qa-item">
+          <div class="qa-q">
+            <div class="qa-icon">❓</div>
+            <div style="flex:1">
+              <strong>¿Qué documentación se necesita para ALTA como Importador por primera vez?</strong>
+              <p>Soy contador y mi cliente quiere comenzar a importar desde China. ¿Por dónde arranco?</p>
+              <div class="qa-meta">
+                <span>👤 Diego Morales</span>
+                <span>· 7 respuestas</span>
+                <span>· hace 2 días</span>
+              </div>
+            </div>
+            <span class="qa-badge">✅ Respondida</span>
+          </div>
+        </div>
+
+        <div class="qa-item">
+          <div class="qa-q">
+            <div class="qa-icon">❓</div>
+            <div style="flex:1">
+              <strong>¿El régimen de Courrier aplica para envíos desde Estados Unidos?</strong>
+              <p>Tengo un proveedor en Miami que manda paquetes regulares. ¿Cómo se clasifica?</p>
+              <div class="qa-meta">
+                <span>👤 Sofía Ramos</span>
+                <span>· 2 respuestas</span>
+                <span>· hace 3 días</span>
+              </div>
+            </div>
+            <span class="qa-badge open">💬 Abierta</span>
+          </div>
+        </div>
+
+        <div class="qa-item">
+          <div class="qa-q">
+            <div class="qa-icon">❓</div>
+            <div style="flex:1">
+              <strong>¿Cómo se calcula el valor en aduana para productos con descuentos comerciales?</strong>
+              <p>Mi proveedor me aplica un 15% de descuento en factura. ¿Se considera ese precio para la base imponible?</p>
+              <div class="qa-meta">
+                <span>👤 Hernán Vega</span>
+                <span>· 0 respuestas</span>
+                <span>· hoy</span>
+              </div>
+            </div>
+            <span class="qa-badge open">💬 Sin respuesta</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: DIRECTORIO -->
+      <div class="tab-panel" id="tab-dir">
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+          <input type="text" placeholder="Buscar miembro..." style="border:1.5px solid var(--border);border-radius:5px;padding:8px 12px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none;flex:1;max-width:300px">
+          <div class="tag active" style="cursor:default">Todos</div>
+          <div class="tag">Importador</div>
+          <div class="tag">Exportador</div>
+          <div class="tag">Despachante</div>
+        </div>
+        <div class="members-grid">
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#1a2a6c,#3a8fd4)">LA</div>
+            <h4>Laura Acosta</h4>
+            <p>Buenos Aires</p>
+            <span class="member-role role-impo">Importadora</span>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#1e5fa0,#5ab4f0)">RC</div>
+            <h4>Roberto Castillo</h4>
+            <p>Córdoba</p>
+            <span class="member-role role-despa">Despachante</span>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#1a7f4b,#3a8fd4)">MP</div>
+            <h4>Marcela Pérez</h4>
+            <p>Rosario</p>
+            <span class="member-role role-expo">Exportadora</span>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#7c3aed,#3a8fd4)">GF</div>
+            <h4>Gastón Ferreira</h4>
+            <p>Mendoza</p>
+            <span class="member-role role-profe">Estudiante</span>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#b85000,#3a8fd4)">DM</div>
+            <h4>Diego Morales</h4>
+            <p>Buenos Aires</p>
+            <span class="member-role role-profe">Contador</span>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#162058,#5ab4f0)">SR</div>
+            <h4>Sofía Ramos</h4>
+            <p>La Plata</p>
+            <span class="member-role role-impo">Importadora</span>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#1a2a6c,#a8d8f5)">HV</div>
+            <h4>Hernán Vega</h4>
+            <p>Tucumán</p>
+            <span class="member-role role-expo">Exportador</span>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#1e3a8a,#3a8fd4)">AG</div>
+            <h4>Ana González</h4>
+            <p>Salta</p>
+            <span class="member-role role-despa">Despachante</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: RECURSOS -->
+      <div class="tab-panel" id="tab-rec">
+        <div class="sec-header" style="margin-bottom:14px"><h2>Recursos compartidos</h2><button class="btn-post" style="border-radius:5px;font-size:12px;padding:6px 14px">+ Subir recurso</button></div>
+
+        <div class="resource-item">
+          <div class="res-icon" style="background:#ddeeff">📄</div>
+          <div class="res-info">
+            <strong>Resumen INCOTERMS 2025</strong>
+            <span>PDF · Subido por Marcela Pérez · 156 descargas</span>
+          </div>
+          <button class="res-dl">⬇ Bajar</button>
+        </div>
+        <div class="resource-item">
+          <div class="res-icon" style="background:#e6f4ed">📊</div>
+          <div class="res-info">
+            <strong>Tabla de posiciones NCM — Textiles</strong>
+            <span>Excel · Subido por Roberto Castillo · 89 descargas</span>
+          </div>
+          <button class="res-dl">⬇ Bajar</button>
+        </div>
+        <div class="resource-item">
+          <div class="res-icon" style="background:#fff0e0">🎥</div>
+          <div class="res-info">
+            <strong>Grabación — Taller Normativa Enero 2025</strong>
+            <span>Video · Material del taller · 203 visualizaciones</span>
+          </div>
+          <button class="res-dl">▶ Ver</button>
+        </div>
+        <div class="resource-item">
+          <div class="res-icon" style="background:#f0e8fb">📋</div>
+          <div class="res-info">
+            <strong>Guía de trámites — ALTA Importador</strong>
+            <span>PDF · Subido por Laura Acosta · 312 descargas</span>
+          </div>
+          <button class="res-dl">⬇ Bajar</button>
+        </div>
+        <div class="resource-item">
+          <div class="res-icon" style="background:#ddeeff">🔗</div>
+          <div class="res-info">
+            <strong>Link — Portal de consultas ARCA (AFIP)</strong>
+            <span>Enlace externo · Verificado · 445 clics</span>
+          </div>
+          <button class="res-dl">↗ Abrir</button>
+        </div>
+        <div class="resource-item">
+          <div class="res-icon" style="background:#e6f4ed">📄</div>
+          <div class="res-info">
+            <strong>Consignas examen Ap.Da — últimas 3 convocatorias</strong>
+            <span>PDF · Subido por la plataforma · 278 descargas</span>
+          </div>
+          <button class="res-dl">⬇ Bajar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3>Mi perfil</h3>
+      <div style="text-align:center;margin-bottom:16px">
+        <div class="post-avatar" style="width:52px;height:52px;font-size:18px;margin:0 auto 8px">M</div>
+        <div style="font-size:13px;font-weight:700;color:var(--navy-deep);font-family:'Montserrat',sans-serif">María López</div>
+        <div style="font-size:12px;color:var(--text-light);margin:2px 0 6px">Importadora · Buenos Aires</div>
+        <span class="member-role role-impo">Importadora</span>
+      </div>
+      <hr class="divider">
+      <h3>Estadísticas</h3>
+      <ul class="sidebar-list">
+        <li><span>💬 12 publicaciones</span></li>
+        <li><span>❓ 5 preguntas</span></li>
+        <li><span>📎 3 recursos subidos</span></li>
+        <li><span>👍 87 me gusta recibidos</span></li>
+      </ul>
+      <hr class="divider">
+      <h3>Más activos</h3>
+      <ul class="sidebar-list">
+        <li><span>🥇 Roberto Castillo</span></li>
+        <li><span>🥈 Marcela Pérez</span></li>
+        <li><span>🥉 Laura Acosta</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="#">Inicio</a> · <a href="#">Contacto</a> · <a href="#">Términos</a>
+    <p style="margin-top:5px">© 2025 365aprendoComEx</p>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     SCREEN 8 · MENTORÍA
+════════════════════════════════════════════ -->
+<div class="screen" id="s8">
+  <div class="topbar">
+    <div class="logo-wrap" onclick="goTo(1)">
+      <svg class="logo-icon" viewBox="0 0 38 38" fill="none"><rect x="4" y="8" width="22" height="16" rx="2" stroke="#5ab4f0" stroke-width="1.8" fill="none"/><rect x="7" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".7"/><rect x="12" y="11" width="4" height="4" rx=".5" fill="#3a8fd4"/><rect x="17" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".9"/><rect x="7" y="16" width="4" height="4" rx=".5" fill="#3a8fd4" opacity=".8"/><rect x="12" y="16" width="4" height="4" rx=".5" fill="#5ab4f0"/><line x1="11" y1="24" x2="11" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="19" y1="24" x2="19" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="8" y1="28" x2="22" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><rect x="24" y="14" width="10" height="16" rx="1.5" stroke="#5ab4f0" stroke-width="1.5" fill="none"/></svg>
+      <div class="logo-text"><span class="n365">365</span><span class="brand"><span class="aprendo">aprendo</span><span class="comex">ComEx</span></span></div>
+    </div>
+    <div class="topbar-right"><button class="btn-wp">WhatsApp</button><span class="user-chip">Hola, <strong>María</strong></span></div>
+  </div>
+  <div class="mainnav"><ul>
+    <li><a href="#" onclick="goTo(2)">Inicio</a></li>
+    <li><a href="#" onclick="goTo(3)">Mis Cursos</a></li>
+    <li><a href="#" onclick="goTo(4)">Programas e Inscripciones</a></li>
+    <li><a href="#" onclick="goTo(7)">Comunidad</a></li>
+    <li><a href="#" class="active">Mentoría</a></li>
+    <li><a href="#">Notificaciones <span class="notif-dot">3</span></a></li>
+  </ul></div>
+
+  <div class="main-wrap">
+    <div class="content-area">
+
+      <!-- Hero mentoría -->
+      <div class="mentoria-hero">
+        <div class="mh-deco"></div>
+        <h2>🎓 Mentoría personalizada en Comercio Exterior</h2>
+        <p>Sesiones individuales y grupales con expertos del sector. Resolvé tus dudas, avanzá en tu carrera y tomá mejores decisiones en tus operaciones.</p>
+      </div>
+
+      <!-- Planes -->
+      <div class="sec-header"><h2>Modalidades de mentoría</h2></div>
+      <div class="plan-grid">
+
+        <div class="plan-card">
+          <div class="plan-icon">🎯</div>
+          <h3>Consulta Puntual</h3>
+          <p>Sesión única de 45 min por videollamada para resolver una duda específica.</p>
+          <ul class="plan-features">
+            <li>1 sesión de 45 minutos</li>
+            <li>Por videollamada (Zoom / Meet)</li>
+            <li>Grabación incluida</li>
+            <li>Consulta previa por escrito</li>
+          </ul>
+          <button class="btn-plan outline">Reservar sesión</button>
+        </div>
+
+        <div class="plan-card featured">
+          <div class="plan-badge">⭐ MÁS ELEGIDO</div>
+          <div class="plan-icon">🚀</div>
+          <h3>Mentoría 1 a 1 — Pack</h3>
+          <p>Acompañamiento continuo con sesiones semanales durante un mes.</p>
+          <ul class="plan-features">
+            <li>4 sesiones de 60 min</li>
+            <li>Seguimiento entre sesiones</li>
+            <li>Material personalizado</li>
+            <li>Acceso directo por WhatsApp</li>
+            <li>Grabaciones de todas las sesiones</li>
+          </ul>
+          <button class="btn-plan">Empezar mentoría</button>
+        </div>
+
+        <div class="plan-card">
+          <div class="plan-icon">👥</div>
+          <h3>Mentoría Grupal</h3>
+          <p>Sesiones en vivo con grupos reducidos de hasta 8 participantes.</p>
+          <ul class="plan-features">
+            <li>Grupos de máx. 8 personas</li>
+            <li>Sesiones de 90 minutos</li>
+            <li>Temario específico por grupo</li>
+            <li>Material compartido</li>
+            <li>Grabación disponible 30 días</li>
+          </ul>
+          <button class="btn-plan outline">Ver grupos disponibles</button>
+        </div>
+
+      </div>
+
+      <!-- Próximas sesiones -->
+      <div class="sec-header"><h2>Próximas sesiones grupales</h2><a href="#">Ver todas →</a></div>
+
+      <div class="session-item">
+        <div class="session-date"><div class="day">20</div><div class="month">Ene</div></div>
+        <div class="session-info">
+          <h4>Operativa de Importación — Casos prácticos</h4>
+          <p>👥 Grupal · 90 min · 19:00hs (ARG) · 5 lugares disponibles</p>
+        </div>
+        <span class="session-status status-open">Inscribirme</span>
+      </div>
+
+      <div class="session-item">
+        <div class="session-date"><div class="day">22</div><div class="month">Ene</div></div>
+        <div class="session-info">
+          <h4>Preparación Examen ATA — Grupo intensivo</h4>
+          <p>👥 Grupal · 90 min · 18:00hs (ARG) · Sin lugares disponibles</p>
+        </div>
+        <span class="session-status status-full">Completo</span>
+      </div>
+
+      <div class="session-item">
+        <div class="session-date"><div class="day">27</div><div class="month">Ene</div></div>
+        <div class="session-info">
+          <h4>Clasificación Arancelaria — Nivel avanzado</h4>
+          <p>👥 Grupal · 90 min · 19:00hs (ARG) · Inscripción próximamente</p>
+        </div>
+        <span class="session-status status-soon">Próximamente</span>
+      </div>
+
+      <div class="session-item">
+        <div class="session-date"><div class="day">29</div><div class="month">Ene</div></div>
+        <div class="session-info">
+          <h4>Mentoría 1 a 1 — Agenda tu sesión</h4>
+          <p>🎯 Individual · 60 min · Horarios a confirmar por WhatsApp</p>
+        </div>
+        <span class="session-status status-open">Reservar</span>
+      </div>
+
+      <hr class="divider">
+
+      <!-- Testimonios -->
+      <div class="sec-header"><h2>Lo que dicen nuestros alumnos</h2></div>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <p>"La mentoría 1 a 1 fue clave para entender cómo aplicar la normativa en mis operaciones reales. En 4 sesiones resolví dudas que tenía hace meses."</p>
+          <div class="testi-author">
+            <div class="testi-av" style="background:linear-gradient(135deg,#1a2a6c,#3a8fd4)">LA</div>
+            <div><strong>Laura Acosta</strong><span> · Importadora</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <p>"El grupo de preparación para el examen ATA fue excelente. Nos pasaron ejercicios específicos y la dinámica grupal ayuda muchísimo."</p>
+          <div class="testi-author">
+            <div class="testi-av" style="background:linear-gradient(135deg,#1e5fa0,#5ab4f0)">GF</div>
+            <div><strong>Gastón Ferreira</strong><span> · Estudiante</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <p>"Empecé de cero y con las sesiones individuales ya pude hacer mi primera importación. El acompañamiento hace toda la diferencia."</p>
+          <div class="testi-author">
+            <div class="testi-av" style="background:linear-gradient(135deg,#7c3aed,#3a8fd4)">DM</div>
+            <div><strong>Diego Morales</strong><span> · Contador</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <p>"Las mentorías grupales son muy dinámicas. Se aprende tanto de las dudas propias como de las de los otros participantes del grupo."</p>
+          <div class="testi-author">
+            <div class="testi-av" style="background:linear-gradient(135deg,#1a7f4b,#3a8fd4)">SR</div>
+            <div><strong>Sofía Ramos</strong><span> · Importadora</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="mentor-profile">
+        <div class="mentor-avatar">JM</div>
+        <h4>Equipo de mentores</h4>
+        <p>Expertos en comercio exterior con más de 10 años de experiencia operativa</p>
+        <button class="btn-contact">💬 Consultar por WhatsApp</button>
+      </div>
+
+      <h3>Mi mentoría activa</h3>
+      <ul class="sidebar-list">
+        <li><span>🎯 Pack 1 a 1 — 2/4 sesiones</span></li>
+        <li><span>📅 Próxima: Lun 20 Ene 19hs</span></li>
+        <li><span>🎥 Grabaciones: 2 disponibles</span></li>
+      </ul>
+
+      <hr class="divider">
+
+      <h3>Preguntas frecuentes</h3>
+      <ul class="sidebar-list">
+        <li><a href="#">¿Cómo agendo mi sesión?</a></li>
+        <li><a href="#">¿Puedo cambiar el horario?</a></li>
+        <li><a href="#">¿Qué plataforma se usa?</a></li>
+        <li><a href="#">¿Hay certificado?</a></li>
+      </ul>
+
+      <hr class="divider">
+
+      <h3>¿Dudas antes de empezar?</h3>
+      <button class="btn-contact" style="background:var(--navy-deep);color:white;border-radius:5px;padding:10px;width:100%;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;border:none">
+        Hablar con un asesor →
+      </button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="#">Inicio</a> · <a href="#">Contacto</a> · <a href="#">Términos</a>
+    <p style="margin-top:5px">© 2025 365aprendoComEx</p>
+  </div>
+</div>
+
+
 <script>
 // ── Screen navigation
 function goTo(n) {
@@ -1190,6 +2169,16 @@ function goTo(n) {
   document.getElementById('s' + n).classList.add('active');
   document.querySelectorAll('.proto-btn')[n - 1].classList.add('active');
   window.scrollTo(0, 0);
+}
+
+// ── Tab navigation (Comunidad)
+function switchTab(btn, panelId) {
+  const tabBar = btn.closest('.tab-bar');
+  tabBar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const contentArea = tabBar.closest('.content-area');
+  contentArea.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(panelId).classList.add('active');
 }
 
 // ── Slider logic
