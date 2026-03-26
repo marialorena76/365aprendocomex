@@ -1,0 +1,2219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>365aprendoComEx – Prototipo</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* Brand palette extraída del logo */
+    --navy-deep:    #1a2a6c;   /* fondo oscuro del logo */
+    --navy-mid:     #1e3a8a;
+    --navy-nav:     #162058;   /* topbar */
+    --blue-brand:   #3a8fd4;   /* "aprendo" y "365" del logo */
+    --blue-light:   #5ab4f0;   /* azul claro logo */
+    --blue-pale:    #a8d8f5;   /* azul muy claro */
+    --blue-accent:  #2878c8;   /* botones activos */
+    --white:        #ffffff;
+    --gray-bg:      #f0f4fa;
+    --gray-light:   #dde4ef;
+    --gray-mid:     #8a9ab8;
+    --text:         #0f1e3d;
+    --text-light:   #4a5f80;
+    --border:       #ccd6e8;
+    --green:        #1a7f4b;
+    --green-bg:     #e6f4ed;
+    --red:          #c0392b;
+  }
+
+  body {
+    font-family: 'Open Sans', sans-serif;
+    background: var(--gray-bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; min-height: 100vh; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  /* ── PROTOTYPE NAV ── */
+  .proto-nav {
+    background: #0a0f1e;
+    padding: 7px 18px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+  .proto-nav .label { font-size: 10px; color: #555; margin-right: 4px; font-family: monospace; }
+  .proto-btn {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    color: #888;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+    transition: all .18s;
+  }
+  .proto-btn:hover { background: rgba(255,255,255,.16); color: #ddd; }
+  .proto-btn.active { background: var(--blue-brand); border-color: var(--blue-brand); color: white; font-weight: 600; }
+
+  /* ══════════════════════════════
+     TOP BAR
+  ══════════════════════════════ */
+  .topbar {
+    background: var(--navy-nav);
+    height: 56px;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 10px rgba(0,0,0,.35);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  /* Logo SVG inline replicando el estilo del logo */
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    position: relative;
+  }
+  .logo-text {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1;
+  }
+  .logo-text .n365 {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--blue-light);
+    display: block;
+    letter-spacing: 1px;
+  }
+  .logo-text .brand {
+    font-size: 17px;
+    display: block;
+    line-height: 1.1;
+  }
+  .logo-text .brand .aprendo { font-weight: 300; color: var(--blue-light); }
+  .logo-text .brand .comex   { font-weight: 800; color: var(--white); }
+
+  .topbar-right { display: flex; align-items: center; gap: 14px; }
+  .btn-wp {
+    background: #25D366;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 7px 14px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Open Sans', sans-serif;
+    letter-spacing: .3px;
+  }
+  .btn-wp:hover { background: #20ba5c; }
+  .user-chip {
+    font-size: 12.5px;
+    color: var(--blue-pale);
+  }
+  .user-chip strong { color: white; }
+
+  /* ══════════════════════════════
+     MAIN NAV
+  ══════════════════════════════ */
+  .mainnav {
+    background: var(--navy-deep);
+    border-bottom: 3px solid var(--blue-brand);
+  }
+  .mainnav ul { list-style: none; display: flex; padding: 0 28px; flex-wrap: wrap; }
+  .mainnav ul li a {
+    display: block;
+    color: #8cb4d8;
+    text-decoration: none;
+    padding: 10px 13px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    transition: all .2s;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .mainnav ul li a:hover,
+  .mainnav ul li a.active { color: var(--white); border-bottom-color: var(--blue-light); }
+  .notif-dot {
+    background: var(--red);
+    color: white;
+    border-radius: 10px;
+    font-size: 9px;
+    padding: 1px 5px;
+    margin-left: 3px;
+    font-weight: 700;
+  }
+
+  /* ══════════════════════════════
+     SEARCH BAR
+  ══════════════════════════════ */
+  .searchbar {
+    background: var(--navy-mid);
+    padding: 10px 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .searchbar input {
+    flex: 1;
+    max-width: 520px;
+    border: none;
+    border-radius: 4px;
+    padding: 9px 15px;
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+    outline: none;
+    background: rgba(255,255,255,.95);
+    color: var(--text);
+  }
+  .searchbar button {
+    background: var(--blue-brand);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 9px 20px;
+    font-weight: 700;
+    font-size: 12.5px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: .5px;
+  }
+  .searchbar button:hover { background: var(--blue-accent); }
+
+  /* ══════════════════════════════
+     LAYOUT
+  ══════════════════════════════ */
+  .main-wrap { display: flex; flex: 1; }
+  .content-area { flex: 1; padding: 24px 28px; min-width: 0; }
+  .sidebar {
+    width: 255px;
+    background: var(--white);
+    border-left: 1px solid var(--border);
+    padding: 22px 18px;
+    flex-shrink: 0;
+  }
+
+  /* ══════════════════════════════
+     HERO BANNER
+  ══════════════════════════════ */
+  .hero-slider {
+    position: relative;
+    overflow: hidden;
+    height: 260px;
+    background: var(--navy-deep);
+  }
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity .6s ease;
+    display: flex;
+    align-items: center;
+  }
+  .slide.show { opacity: 1; }
+
+  /* Slide 1: Cursos */
+  .slide-1 {
+    background:
+      linear-gradient(90deg, rgba(26,42,108,.92) 40%, rgba(26,42,108,.55) 100%),
+      url('https://images.unsplash.com/photo-1590650153855-d9e808231d41?w=1400&q=80') center/cover no-repeat;
+  }
+  /* Slide 2: Talleres */
+  .slide-2 {
+    background:
+      linear-gradient(90deg, rgba(26,42,108,.92) 40%, rgba(26,42,108,.55) 100%),
+      url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1400&q=80') center/cover no-repeat;
+  }
+  /* Slide 3: Mentoría */
+  .slide-3 {
+    background:
+      linear-gradient(90deg, rgba(26,42,108,.92) 40%, rgba(26,42,108,.55) 100%),
+      url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1400&q=80') center/cover no-repeat;
+  }
+  /* Slide 4: Vivos */
+  .slide-4 {
+    background:
+      linear-gradient(90deg, rgba(26,42,108,.92) 40%, rgba(26,42,108,.55) 100%),
+      url('https://images.unsplash.com/photo-1561489413-985b06da5bee?w=1400&q=80') center/cover no-repeat;
+  }
+
+  .slide-content {
+    padding: 0 48px;
+    z-index: 2;
+    position: relative;
+    color: white;
+    max-width: 560px;
+  }
+  .slide-tag {
+    display: inline-block;
+    background: var(--blue-brand);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .slide-content h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.25;
+  }
+  .slide-content p { font-size: 14px; opacity: .85; margin-bottom: 18px; }
+  .btn-slide {
+    background: var(--white);
+    color: var(--navy-deep);
+    border: none;
+    border-radius: 4px;
+    padding: 9px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    transition: all .2s;
+  }
+  .btn-slide:hover { background: var(--blue-light); color: var(--navy-nav); }
+
+  /* Slider controls */
+  .slider-dots {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.4);
+    cursor: pointer;
+    transition: all .2s;
+    border: none;
+  }
+  .dot.active { background: var(--white); width: 22px; border-radius: 4px; }
+  .slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    color: white;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: background .2s;
+  }
+  .slider-arrow:hover { background: rgba(255,255,255,.3); }
+  .slider-arrow.prev { left: 14px; }
+  .slider-arrow.next { right: 14px; }
+
+  /* ══════════════════════════════
+     LOGIN SCREEN
+  ══════════════════════════════ */
+  .login-wrap { display: flex; flex: 1; min-height: calc(100vh - 56px); }
+  .login-hero {
+    flex: 1;
+    background:
+      linear-gradient(150deg, var(--navy-nav) 0%, var(--navy-deep) 50%, #1e5fa0 100%),
+      url('https://images.unsplash.com/photo-1586769852044-692d6e3703f0?w=1200&q=70') center/cover no-repeat;
+    background-blend-mode: multiply;
+    display: flex;
+    flex-direction: column;
+    padding: 50px 60px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    justify-content: center;
+  }
+  .login-hero h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.25;
+  }
+  .login-hero h1 span { color: var(--blue-light); }
+  .login-hero .sub { font-size: 15px; opacity: .8; max-width: 380px; margin-bottom: 32px; }
+  .login-deco {
+    position: absolute; right: -80px; top: -80px;
+    width: 420px; height: 420px; border-radius: 50%;
+    border: 1px solid rgba(90,180,240,.12);
+    background: rgba(90,180,240,.04);
+  }
+  .login-deco2 {
+    position: absolute; right: 60px; bottom: -120px;
+    width: 280px; height: 280px; border-radius: 50%;
+    border: 1px solid rgba(90,180,240,.08);
+    background: rgba(90,180,240,.03);
+  }
+  .promo-cards { display: flex; flex-direction: column; gap: 12px; max-width: 440px; }
+  .promo-card {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(90,180,240,.25);
+    border-radius: 8px;
+    padding: 13px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    backdrop-filter: blur(4px);
+    transition: background .2s;
+  }
+  .promo-card:hover { background: rgba(255,255,255,.14); }
+  .pci {
+    width: 38px; height: 38px;
+    background: var(--blue-brand);
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px; flex-shrink: 0;
+  }
+  .promo-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 2px; font-family: 'Montserrat', sans-serif; }
+  .promo-card p { font-size: 12px; opacity: .7; margin: 0; }
+
+  /* Login panel */
+  .login-panel {
+    width: 340px;
+    background: white;
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    border-left: 4px solid var(--blue-brand);
+    box-shadow: -6px 0 24px rgba(0,0,0,.18);
+  }
+  .login-panel .panel-logo { margin-bottom: 24px; text-align: center; }
+  .login-panel .panel-logo .n365 { font-size: 13px; font-weight: 300; color: var(--blue-brand); letter-spacing: 2px; }
+  .login-panel .panel-logo .brand { font-size: 20px; }
+  .login-panel .panel-logo .aprendo { color: var(--blue-brand); font-weight: 300; }
+  .login-panel .panel-logo .comex { color: var(--navy-deep); font-weight: 800; }
+  .login-panel h3 {
+    font-size: 14px; font-weight: 700; color: var(--navy-deep);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 7px;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .form-group { margin-bottom: 13px; }
+  .form-group label {
+    display: block; font-size: 11px; font-weight: 700; color: var(--text-light);
+    margin-bottom: 5px; text-transform: uppercase; letter-spacing: .5px;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .form-group input {
+    width: 100%; padding: 10px 12px;
+    border: 1.5px solid var(--border); border-radius: 4px;
+    font-size: 14px; font-family: 'Open Sans', sans-serif;
+    outline: none; transition: border .18s; color: var(--text);
+  }
+  .form-group input:focus { border-color: var(--blue-brand); }
+  .btn-primary {
+    background: var(--navy-deep); color: white; border: none;
+    border-radius: 4px; padding: 11px; font-size: 14px;
+    font-weight: 700; cursor: pointer; width: 100%;
+    font-family: 'Montserrat', sans-serif; letter-spacing: .5px;
+    transition: background .2s; margin-top: 4px;
+  }
+  .btn-primary:hover { background: var(--blue-accent); }
+  .sep { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+  .login-links { display: flex; flex-direction: column; gap: 9px; }
+  .login-links a { color: var(--blue-brand); font-size: 13px; text-decoration: none; }
+  .login-links a:hover { text-decoration: underline; }
+  .login-note {
+    margin-top: 18px; background: var(--gray-bg);
+    border-radius: 6px; padding: 12px; text-align: center;
+  }
+  .login-note p { font-size: 12px; color: var(--text-light); margin-bottom: 5px; }
+  .login-note a { color: var(--blue-brand); font-size: 12.5px; font-weight: 700; text-decoration: none; }
+
+  /* ══════════════════════════════
+     SECTION HEADERS
+  ══════════════════════════════ */
+  .sec-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .sec-header h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px; font-weight: 700; color: var(--navy-deep);
+    border-left: 3px solid var(--blue-brand); padding-left: 10px;
+  }
+  .sec-header a { color: var(--blue-brand); font-size: 12px; font-weight: 600; text-decoration: none; }
+  .sec-header a:hover { text-decoration: underline; }
+
+  /* ══════════════════════════════
+     CARDS
+  ══════════════════════════════ */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(138px, 1fr));
+    gap: 12px; margin-bottom: 28px;
+  }
+  .card {
+    background: white; border: 1px solid var(--border); border-radius: 7px;
+    padding: 16px 13px; display: flex; flex-direction: column;
+    align-items: center; text-align: center; cursor: pointer;
+    transition: all .2s; text-decoration: none; color: var(--text);
+  }
+  .card:hover {
+    border-color: var(--blue-brand);
+    box-shadow: 0 4px 14px rgba(58,143,212,.15);
+    transform: translateY(-2px);
+  }
+  .card-icon {
+    width: 46px; height: 46px; border-radius: 9px;
+    background: linear-gradient(135deg, #ddeeff, #c5e2f7);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 10px;
+  }
+  .card h4 { font-size: 12px; font-weight: 600; color: var(--navy-deep); line-height: 1.35; font-family: 'Montserrat', sans-serif; }
+
+  .content-cards {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+    gap: 14px; margin-bottom: 28px;
+  }
+  .content-card {
+    background: white; border: 1px solid var(--border); border-radius: 7px;
+    padding: 18px 16px; cursor: pointer; transition: all .2s;
+    border-top: 3px solid var(--blue-brand);
+  }
+  .content-card:hover { box-shadow: 0 5px 18px rgba(58,143,212,.15); transform: translateY(-2px); }
+  .content-card .lbl {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .5px; color: var(--blue-brand); margin-bottom: 6px;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .content-card h4 { font-size: 13px; font-weight: 700; color: var(--navy-deep); margin-bottom: 5px; line-height: 1.3; font-family: 'Montserrat', sans-serif; }
+  .content-card p { font-size: 12px; color: var(--text-light); }
+
+  /* ══════════════════════════════
+     SIDEBAR
+  ══════════════════════════════ */
+  .sidebar h3 {
+    font-size: 11px; font-weight: 700; color: var(--navy-deep);
+    border-left: 3px solid var(--blue-brand); padding-left: 8px;
+    margin-bottom: 12px; text-transform: uppercase; letter-spacing: .5px;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .sidebar-list { list-style: none; margin-bottom: 22px; }
+  .sidebar-list li { border-bottom: 1px solid var(--border); }
+  .sidebar-list li a, .sidebar-list li span {
+    display: block; padding: 9px 5px;
+    font-size: 13px; color: var(--blue-brand);
+    text-decoration: none; cursor: pointer; transition: color .18s;
+  }
+  .sidebar-list li a:hover, .sidebar-list li span:hover { color: var(--navy-deep); }
+  .taller-card {
+    background: linear-gradient(135deg, var(--navy-deep), var(--navy-mid));
+    border-radius: 7px; padding: 12px 14px; margin-bottom: 8px; cursor: pointer;
+    transition: opacity .2s;
+  }
+  .taller-card:hover { opacity: .88; }
+  .taller-card h4 { font-size: 12.5px; font-weight: 700; color: white; font-family: 'Montserrat', sans-serif; margin-bottom: 3px; }
+  .taller-card .tc-date { font-size: 11px; color: var(--blue-pale); }
+
+  /* ══════════════════════════════
+     COURSES SCREEN
+  ══════════════════════════════ */
+  .course-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    gap: 16px; margin-bottom: 28px;
+  }
+  .course-card {
+    background: white; border: 1px solid var(--border); border-radius: 8px;
+    overflow: hidden; cursor: pointer; transition: all .2s;
+  }
+  .course-card:hover { box-shadow: 0 5px 20px rgba(58,143,212,.18); transform: translateY(-2px); }
+  .course-thumb {
+    height: 92px; display: flex; align-items: center;
+    justify-content: center; font-size: 38px;
+    position: relative; overflow: hidden;
+  }
+  .course-body { padding: 12px 14px; }
+  .course-body h4 { font-size: 13px; font-weight: 700; color: var(--navy-deep); margin-bottom: 4px; line-height: 1.3; font-family: 'Montserrat', sans-serif; }
+  .course-body p { font-size: 11.5px; color: var(--text-light); }
+  .course-tag {
+    display: inline-block; background: #ddeeff; color: var(--blue-accent);
+    font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+    margin-top: 6px; text-transform: uppercase; letter-spacing: .3px;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  /* ══════════════════════════════
+     MÁS VISTOS LIST
+  ══════════════════════════════ */
+  .mv-list { list-style: none; }
+  .mv-list li {
+    display: flex; gap: 12px; padding: 11px 0;
+    border-bottom: 1px solid var(--border); cursor: pointer;
+    align-items: center;
+  }
+  .mv-list li:hover .mv-title { color: var(--blue-brand); }
+  .mv-num { font-size: 20px; font-weight: 800; color: var(--gray-light); width: 26px; text-align: right; font-family: 'Montserrat', sans-serif; flex-shrink: 0; }
+  .mv-info { flex: 1; }
+  .mv-title { font-size: 13px; font-weight: 600; color: var(--navy-deep); font-family: 'Montserrat', sans-serif; transition: color .18s; }
+  .mv-cat { font-size: 11px; color: var(--text-light); }
+
+  /* ══════════════════════════════
+     NOVEDADES
+  ══════════════════════════════ */
+  .novedad {
+    background: white; border: 1px solid var(--border); border-radius: 7px;
+    padding: 13px 16px; margin-bottom: 9px; display: flex;
+    gap: 12px; align-items: flex-start; cursor: pointer; transition: border .18s;
+  }
+  .novedad:hover { border-color: var(--blue-brand); }
+  .ndot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue-brand); margin-top: 6px; flex-shrink: 0; }
+  .novedad h4 { font-size: 13px; font-weight: 700; color: var(--navy-deep); margin-bottom: 3px; font-family: 'Montserrat', sans-serif; }
+  .novedad p { font-size: 12px; color: var(--text-light); }
+
+  /* ══════════════════════════════
+     CHIPS & TAGS
+  ══════════════════════════════ */
+  .chip { display: inline-block; padding: 2px 9px; border-radius: 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; font-family: 'Montserrat', sans-serif; }
+  .chip-new { background: var(--green-bg); color: var(--green); }
+  .chip-hot { background: #fff0e0; color: #b85000; }
+
+  .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .tag {
+    background: white; border: 1.5px solid var(--border); border-radius: 18px;
+    padding: 4px 14px; font-size: 12px; font-weight: 600; color: var(--text-light);
+    cursor: pointer; transition: all .18s; font-family: 'Montserrat', sans-serif;
+  }
+  .tag:hover, .tag.active { border-color: var(--blue-brand); color: var(--blue-brand); background: #ddeeff; }
+
+  /* ══════════════════════════════
+     ALERT BOX
+  ══════════════════════════════ */
+  .alert-box {
+    background: linear-gradient(90deg, #ddeeff, #eef5ff);
+    border: 1px solid #b5d4f0; border-left: 4px solid var(--blue-brand);
+    border-radius: 4px; padding: 11px 16px; margin-bottom: 18px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .alert-box p { font-size: 13px; color: var(--text); }
+
+  /* ══════════════════════════════
+     DETAIL SCREEN
+  ══════════════════════════════ */
+  .detail-wrap { display: flex; flex: 1; }
+  .detail-sidebar {
+    width: 235px; background: white; border-right: 1px solid var(--border);
+    padding: 20px 0; flex-shrink: 0;
+  }
+  .detail-sidebar .ds-cat {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px;
+    color: var(--gray-mid); padding: 0 16px 10px;
+    border-bottom: 1px solid var(--border); margin-bottom: 6px;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .detail-sidebar ul { list-style: none; }
+  .detail-sidebar ul li a {
+    display: block; padding: 10px 20px; font-size: 13px;
+    color: var(--text); text-decoration: none; transition: all .18s;
+    border-left: 3px solid transparent; cursor: pointer;
+  }
+  .detail-sidebar ul li a:hover { color: var(--navy-deep); background: var(--gray-bg); border-left-color: var(--blue-pale); }
+  .detail-sidebar ul li a.active { color: var(--navy-deep); background: #ddeeff; border-left-color: var(--blue-brand); font-weight: 700; }
+  .detail-content { flex: 1; padding: 28px 34px; }
+  .breadcrumb { font-size: 12px; color: var(--gray-mid); margin-bottom: 14px; }
+  .breadcrumb a { color: var(--blue-brand); text-decoration: none; }
+  .detail-content h2 {
+    font-family: 'Montserrat', sans-serif; font-size: 22px;
+    font-weight: 700; color: var(--navy-deep); margin-bottom: 12px;
+  }
+  .doc-box {
+    background: white; border: 1px solid var(--border); border-radius: 7px;
+    padding: 22px 24px; margin-bottom: 16px;
+  }
+  .doc-box h3 {
+    font-size: 14px; font-weight: 700; color: var(--navy-deep);
+    margin-bottom: 12px; font-family: 'Montserrat', sans-serif;
+  }
+  .doc-box p { font-size: 13.5px; color: var(--text-light); line-height: 1.75; }
+  .doc-meta { display: flex; gap: 18px; margin-top: 12px; flex-wrap: wrap; }
+  .doc-meta span { font-size: 11px; color: var(--gray-mid); }
+  .btn-dl {
+    background: var(--navy-deep); color: white; border: none; border-radius: 4px;
+    padding: 9px 20px; font-size: 13px; font-weight: 700; cursor: pointer;
+    font-family: 'Montserrat', sans-serif; margin-top: 14px;
+    display: inline-flex; align-items: center; gap: 6px; transition: background .2s;
+  }
+  .btn-dl:hover { background: var(--blue-accent); }
+
+  /* ══════════════════════════════
+     DIVIDER & FOOTER
+  ══════════════════════════════ */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+  .footer {
+    background: var(--navy-nav); color: rgba(255,255,255,.5);
+    text-align: center; padding: 16px; font-size: 12px; margin-top: auto;
+  }
+  .footer a { color: rgba(255,255,255,.65); text-decoration: none; margin: 0 8px; }
+  .footer a:hover { color: white; }
+  .footer .social { display: flex; justify-content: center; gap: 14px; margin-top: 6px; font-size: 14px; }
+
+  /* ══════════════════════════════
+     COMUNIDAD & MENTORÍA
+  ══════════════════════════════ */
+
+  /* Tabs */
+  .tab-bar {
+    display: flex; gap: 0;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 22px;
+  }
+  .tab-btn {
+    padding: 10px 20px; font-size: 13px; font-weight: 700;
+    color: var(--text-light); background: none; border: none;
+    cursor: pointer; border-bottom: 3px solid transparent;
+    margin-bottom: -2px; font-family: 'Montserrat', sans-serif;
+    transition: all .18s;
+  }
+  .tab-btn:hover { color: var(--blue-brand); }
+  .tab-btn.active { color: var(--navy-deep); border-bottom-color: var(--blue-brand); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Feed */
+  .post-box {
+    background: white; border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px 16px; margin-bottom: 10px;
+    display: flex; gap: 12px;
+  }
+  .post-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy-deep), var(--blue-brand));
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 15px; font-weight: 700;
+    flex-shrink: 0; font-family: 'Montserrat', sans-serif;
+  }
+  .post-body { flex: 1; }
+  .post-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .post-meta strong { font-size: 13px; font-weight: 700; color: var(--navy-deep); font-family: 'Montserrat', sans-serif; }
+  .post-meta span { font-size: 11px; color: var(--gray-mid); }
+  .post-body p { font-size: 13px; color: var(--text-light); line-height: 1.6; }
+  .post-actions { display: flex; gap: 14px; margin-top: 9px; }
+  .post-act {
+    background: none; border: none; cursor: pointer;
+    font-size: 12px; color: var(--gray-mid); font-family: 'Open Sans', sans-serif;
+    display: flex; align-items: center; gap: 4px; transition: color .18s;
+  }
+  .post-act:hover { color: var(--blue-brand); }
+  .new-post-box {
+    background: white; border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px 16px; margin-bottom: 16px; display: flex; gap: 12px; align-items: center;
+  }
+  .new-post-box input {
+    flex: 1; border: 1.5px solid var(--border); border-radius: 20px;
+    padding: 9px 16px; font-size: 13px; font-family: 'Open Sans', sans-serif;
+    outline: none; color: var(--text); transition: border .18s;
+  }
+  .new-post-box input:focus { border-color: var(--blue-brand); }
+  .btn-post {
+    background: var(--blue-brand); color: white; border: none;
+    border-radius: 20px; padding: 9px 18px; font-size: 12.5px;
+    font-weight: 700; cursor: pointer; font-family: 'Montserrat', sans-serif;
+    white-space: nowrap;
+  }
+  .btn-post:hover { background: var(--blue-accent); }
+
+  /* Q&A */
+  .qa-item {
+    background: white; border: 1px solid var(--border); border-radius: 8px;
+    margin-bottom: 10px; overflow: hidden; cursor: pointer;
+    transition: border .18s;
+  }
+  .qa-item:hover { border-color: var(--blue-brand); }
+  .qa-q {
+    padding: 13px 16px; display: flex; gap: 10px; align-items: flex-start;
+  }
+  .qa-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .qa-q strong { display: block; font-size: 13px; font-weight: 700; color: var(--navy-deep); margin-bottom: 3px; font-family: 'Montserrat', sans-serif; }
+  .qa-q p { font-size: 12px; color: var(--text-light); }
+  .qa-meta { display: flex; gap: 10px; margin-top: 6px; }
+  .qa-meta span { font-size: 11px; color: var(--gray-mid); }
+  .qa-badge {
+    margin-left: auto; background: var(--green-bg); color: var(--green);
+    font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+    align-self: flex-start; font-family: 'Montserrat', sans-serif;
+    white-space: nowrap;
+  }
+  .qa-badge.open { background: #fff8e0; color: #b86000; }
+
+  /* Directorio */
+  .members-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 12px; margin-bottom: 20px;
+  }
+  .member-card {
+    background: white; border: 1px solid var(--border); border-radius: 8px;
+    padding: 18px 14px; text-align: center; cursor: pointer;
+    transition: all .2s;
+  }
+  .member-card:hover { border-color: var(--blue-brand); box-shadow: 0 4px 14px rgba(58,143,212,.13); }
+  .member-avatar {
+    width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 800; color: white; font-family: 'Montserrat', sans-serif;
+  }
+  .member-card h4 { font-size: 13px; font-weight: 700; color: var(--navy-deep); font-family: 'Montserrat', sans-serif; margin-bottom: 3px; }
+  .member-card p { font-size: 11.5px; color: var(--text-light); margin-bottom: 8px; }
+  .member-role {
+    display: inline-block; padding: 2px 9px; border-radius: 10px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .role-impo { background: #ddeeff; color: var(--blue-accent); }
+  .role-expo { background: var(--green-bg); color: var(--green); }
+  .role-despa { background: #f0e8fb; color: #7c3aed; }
+  .role-profe { background: #fff0e0; color: #b85000; }
+
+  /* Recursos */
+  .resource-item {
+    background: white; border: 1px solid var(--border); border-radius: 7px;
+    padding: 12px 16px; margin-bottom: 9px; display: flex;
+    gap: 12px; align-items: center; cursor: pointer; transition: border .18s;
+  }
+  .resource-item:hover { border-color: var(--blue-brand); }
+  .res-icon {
+    width: 40px; height: 40px; border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .res-info { flex: 1; }
+  .res-info strong { display: block; font-size: 13px; font-weight: 700; color: var(--navy-deep); font-family: 'Montserrat', sans-serif; margin-bottom: 2px; }
+  .res-info span { font-size: 11.5px; color: var(--text-light); }
+  .res-dl {
+    background: none; border: 1.5px solid var(--blue-brand); color: var(--blue-brand);
+    border-radius: 4px; padding: 5px 12px; font-size: 11.5px; font-weight: 700;
+    cursor: pointer; font-family: 'Montserrat', sans-serif; white-space: nowrap;
+    transition: all .18s;
+  }
+  .res-dl:hover { background: var(--blue-brand); color: white; }
+
+  /* Mentoría */
+  .mentoria-hero {
+    background: linear-gradient(120deg, var(--navy-nav) 0%, var(--navy-deep) 50%, #1e5fa0 100%);
+    padding: 32px 28px; color: white; border-radius: 8px; margin-bottom: 22px;
+    position: relative; overflow: hidden;
+  }
+  .mentoria-hero h2 { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .mentoria-hero p { font-size: 13.5px; opacity: .8; max-width: 500px; }
+  .mentoria-hero .mh-deco {
+    position: absolute; right: -30px; top: -30px; width: 180px; height: 180px;
+    border-radius: 50%; border: 1px solid rgba(90,180,240,.2); pointer-events: none;
+  }
+  .plan-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px; margin-bottom: 26px;
+  }
+  .plan-card {
+    background: white; border: 2px solid var(--border); border-radius: 10px;
+    padding: 22px 20px; cursor: pointer; transition: all .2s; position: relative;
+  }
+  .plan-card:hover { border-color: var(--blue-brand); box-shadow: 0 6px 20px rgba(58,143,212,.15); transform: translateY(-2px); }
+  .plan-card.featured { border-color: var(--blue-brand); }
+  .plan-badge {
+    position: absolute; top: -10px; left: 20px;
+    background: var(--blue-brand); color: white;
+    font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 10px;
+    font-family: 'Montserrat', sans-serif; letter-spacing: .4px;
+  }
+  .plan-icon { font-size: 30px; margin-bottom: 10px; }
+  .plan-card h3 { font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 700; color: var(--navy-deep); margin-bottom: 6px; }
+  .plan-card p { font-size: 12.5px; color: var(--text-light); line-height: 1.6; margin-bottom: 14px; }
+  .plan-features { list-style: none; margin-bottom: 18px; }
+  .plan-features li { font-size: 12px; color: var(--text-light); padding: 4px 0; border-bottom: 1px solid var(--border); display: flex; gap: 7px; align-items: flex-start; }
+  .plan-features li:last-child { border: none; }
+  .plan-features li::before { content: "✓"; color: var(--blue-brand); font-weight: 700; font-size: 12px; flex-shrink: 0; }
+  .btn-plan {
+    display: block; width: 100%; background: var(--navy-deep); color: white;
+    border: none; border-radius: 5px; padding: 10px; font-size: 13px;
+    font-weight: 700; cursor: pointer; font-family: 'Montserrat', sans-serif;
+    text-align: center; transition: background .2s;
+  }
+  .btn-plan:hover { background: var(--blue-accent); }
+  .btn-plan.outline {
+    background: none; border: 2px solid var(--navy-deep); color: var(--navy-deep);
+  }
+  .btn-plan.outline:hover { background: var(--navy-deep); color: white; }
+
+  /* Agenda / Sesiones */
+  .session-item {
+    background: white; border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px 16px; margin-bottom: 10px; display: flex;
+    gap: 14px; align-items: center;
+  }
+  .session-date {
+    background: var(--navy-deep); color: white; border-radius: 7px;
+    padding: 8px 12px; text-align: center; flex-shrink: 0; min-width: 52px;
+  }
+  .session-date .day { font-size: 20px; font-weight: 800; font-family: 'Montserrat', sans-serif; line-height: 1; }
+  .session-date .month { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; opacity: .8; }
+  .session-info { flex: 1; }
+  .session-info h4 { font-size: 13.5px; font-weight: 700; color: var(--navy-deep); font-family: 'Montserrat', sans-serif; margin-bottom: 3px; }
+  .session-info p { font-size: 12px; color: var(--text-light); }
+  .session-status {
+    font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 10px;
+    font-family: 'Montserrat', sans-serif; white-space: nowrap;
+  }
+  .status-open { background: var(--green-bg); color: var(--green); }
+  .status-full { background: #ffe5e5; color: var(--red); }
+  .status-soon { background: #fff8e0; color: #b86000; }
+
+  /* Testimonios */
+  .testi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .testi-card {
+    background: white; border: 1px solid var(--border); border-radius: 8px;
+    padding: 16px; border-left: 3px solid var(--blue-brand);
+  }
+  .testi-card p { font-size: 12.5px; color: var(--text-light); line-height: 1.65; font-style: italic; margin-bottom: 10px; }
+  .testi-author { display: flex; gap: 8px; align-items: center; }
+  .testi-av {
+    width: 30px; height: 30px; border-radius: 50%; font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; color: white;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .testi-author strong { font-size: 12px; font-weight: 700; color: var(--navy-deep); font-family: 'Montserrat', sans-serif; }
+  .testi-author span { font-size: 11px; color: var(--gray-mid); }
+
+  /* Sidebar mentoría */
+  .mentor-profile {
+    background: linear-gradient(135deg, var(--navy-deep), var(--navy-mid));
+    border-radius: 8px; padding: 18px; text-align: center; margin-bottom: 16px; color: white;
+  }
+  .mentor-avatar {
+    width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 10px;
+    background: var(--blue-brand); display: flex; align-items: center;
+    justify-content: center; font-size: 24px; font-weight: 800;
+    font-family: 'Montserrat', sans-serif; border: 2px solid rgba(255,255,255,.3);
+  }
+  .mentor-profile h4 { font-size: 14px; font-weight: 700; font-family: 'Montserrat', sans-serif; margin-bottom: 3px; }
+  .mentor-profile p { font-size: 11.5px; opacity: .75; margin-bottom: 12px; }
+  .btn-contact {
+    display: block; background: white; color: var(--navy-deep);
+    border: none; border-radius: 5px; padding: 8px; font-size: 12.5px;
+    font-weight: 700; cursor: pointer; font-family: 'Montserrat', sans-serif; width: 100%;
+    transition: background .2s;
+  }
+  .btn-contact:hover { background: var(--blue-pale); }
+
+  /* ══════════════════════════════════════════════
+     RESPONSIVE — MOBILE FIRST (max 768px)
+  ══════════════════════════════════════════════ */
+  @media (max-width: 768px) {
+
+    /* ── Proto nav ── */
+    .proto-nav { padding: 6px 10px; gap: 4px; }
+    .proto-btn { padding: 3px 7px; font-size: 10px; }
+    .proto-nav .label { display: none; }
+
+    /* ── Topbar ── */
+    .topbar { height: 50px; padding: 0 14px; }
+    .logo-text .n365 { font-size: 12px; }
+    .logo-text .brand { font-size: 14px; }
+    .logo-icon { width: 28px; height: 28px; }
+    .btn-wp span, .user-chip { display: none; }
+    .btn-wp { padding: 6px 10px; font-size: 0; gap: 0; }
+    .btn-wp svg { width: 16px; height: 16px; }
+
+    /* ── Main nav ── */
+    .mainnav { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .mainnav::-webkit-scrollbar { height: 2px; }
+    .mainnav ul { flex-wrap: nowrap; padding: 0 10px; min-width: max-content; }
+    .mainnav ul li a { padding: 9px 10px; font-size: 10.5px; letter-spacing: .2px; }
+
+    /* ── Search bar ── */
+    .searchbar { padding: 8px 12px; gap: 8px; }
+    .searchbar input { font-size: 13px; padding: 8px 12px; }
+    .searchbar button { padding: 8px 12px; font-size: 11px; }
+
+    /* ── Main layout: sidebar goes below content ── */
+    .main-wrap { flex-direction: column; }
+    .content-area { padding: 16px 14px; }
+    .sidebar {
+      width: 100%;
+      border-left: none;
+      border-top: 2px solid var(--border);
+      padding: 16px 14px;
+    }
+
+    /* ── LOGIN ── */
+    .login-wrap { flex-direction: column; }
+    .login-hero {
+      padding: 28px 20px;
+      min-height: auto;
+    }
+    .login-hero h1 { font-size: 22px; margin-bottom: 8px; }
+    .login-hero .sub { font-size: 13px; margin-bottom: 20px; }
+    .promo-cards { gap: 10px; }
+    .promo-card { padding: 10px 12px; }
+    .promo-card h4 { font-size: 12px; }
+    .promo-card p { font-size: 11px; }
+    .login-panel {
+      width: 100%;
+      border-left: none;
+      border-top: 4px solid var(--blue-brand);
+      box-shadow: none;
+      padding: 28px 20px;
+    }
+
+    /* ── HERO SLIDER ── */
+    .hero-slider { height: 200px; }
+    .slide-content { padding: 0 20px; max-width: 100%; }
+    .slide-content h2 { font-size: 18px; margin-bottom: 6px; }
+    .slide-content p { font-size: 12.5px; margin-bottom: 12px; }
+    .btn-slide { padding: 7px 14px; font-size: 12px; }
+    .slider-arrow { width: 28px; height: 28px; font-size: 13px; }
+
+    /* ── CARDS GRIDS ── */
+    .cards-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .card { padding: 12px 8px; }
+    .card-icon { width: 36px; height: 36px; font-size: 18px; margin-bottom: 7px; }
+    .card h4 { font-size: 11px; }
+
+    .content-cards { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .content-card { padding: 14px 12px; }
+
+    .course-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .course-thumb { height: 72px; font-size: 28px; }
+    .course-body { padding: 10px 12px; }
+    .course-body h4 { font-size: 12px; }
+    .course-body p { font-size: 11px; }
+
+    /* ── SECTION HEADERS ── */
+    .sec-header h2 { font-size: 13.5px; }
+    .sec-header a { font-size: 11.5px; }
+
+    /* ── ALERT BOX ── */
+    .alert-box { padding: 10px 12px; }
+    .alert-box p { font-size: 12px; }
+
+    /* ── NOVEDADES ── */
+    .novedad { padding: 11px 12px; gap: 10px; }
+    .novedad h4 { font-size: 12.5px; }
+    .novedad p { font-size: 11.5px; }
+
+    /* ── MÁS VISTOS ── */
+    .mv-num { font-size: 16px; width: 20px; }
+    .mv-title { font-size: 12.5px; }
+    .mv-cat { font-size: 11px; }
+
+    /* ── TALLER CARDS SIDEBAR ── */
+    .taller-card { padding: 10px 12px; }
+    .taller-card h4 { font-size: 12px; }
+
+    /* ── DETAIL SCREEN ── */
+    .detail-wrap { flex-direction: column; }
+    .detail-sidebar {
+      width: 100%;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+    .detail-sidebar ul li a { padding: 8px 16px; font-size: 13px; }
+    .detail-content { padding: 16px 14px; }
+    .detail-content h2 { font-size: 18px; }
+    .doc-box { padding: 16px; }
+    .doc-box h3 { font-size: 13px; }
+    .doc-box p { font-size: 13px; }
+    .doc-meta { flex-direction: column; gap: 5px; }
+    .btn-dl { padding: 8px 14px; font-size: 12.5px; }
+
+    /* ── COMUNIDAD ── */
+    .tab-bar { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+    .tab-bar::-webkit-scrollbar { height: 2px; }
+    .tab-btn { white-space: nowrap; padding: 9px 12px; font-size: 12px; }
+    .new-post-box { padding: 10px 12px; gap: 8px; }
+    .new-post-box input { font-size: 12.5px; }
+    .btn-post { font-size: 12px; padding: 8px 12px; }
+    .post-box { padding: 12px; gap: 10px; }
+    .post-avatar { width: 32px; height: 32px; font-size: 13px; flex-shrink: 0; }
+    .post-meta strong { font-size: 12.5px; }
+    .post-meta span { font-size: 11px; }
+    .post-body p { font-size: 12.5px; }
+    .post-actions { gap: 10px; }
+    .post-act { font-size: 11.5px; }
+
+    .qa-item .qa-q { padding: 12px 12px; gap: 8px; }
+    .qa-q strong { font-size: 12.5px; }
+    .qa-q p { font-size: 11.5px; }
+    .qa-meta span { font-size: 10.5px; }
+    .qa-badge { font-size: 9.5px; padding: 2px 7px; }
+
+    .members-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .member-card { padding: 14px 10px; }
+    .member-avatar { width: 44px; height: 44px; font-size: 17px; }
+    .member-card h4 { font-size: 12px; }
+    .member-card p { font-size: 11px; }
+
+    .resource-item { padding: 10px 12px; gap: 10px; }
+    .res-icon { width: 34px; height: 34px; font-size: 17px; }
+    .res-info strong { font-size: 12.5px; }
+    .res-info span { font-size: 11px; }
+    .res-dl { padding: 5px 10px; font-size: 11px; }
+
+    /* ── MENTORÍA ── */
+    .mentoria-hero { padding: 22px 16px; border-radius: 7px; margin-bottom: 18px; }
+    .mentoria-hero h2 { font-size: 16px; margin-bottom: 6px; }
+    .mentoria-hero p { font-size: 13px; }
+
+    .plan-grid { grid-template-columns: 1fr; gap: 14px; }
+    .plan-card { padding: 18px 16px; }
+    .plan-card h3 { font-size: 14px; }
+    .plan-card p { font-size: 12px; }
+    .plan-features li { font-size: 11.5px; }
+    .btn-plan { font-size: 12.5px; }
+
+    .session-item { padding: 12px; gap: 10px; }
+    .session-date { padding: 6px 10px; min-width: 44px; }
+    .session-date .day { font-size: 17px; }
+    .session-date .month { font-size: 9px; }
+    .session-info h4 { font-size: 12.5px; }
+    .session-info p { font-size: 11px; }
+    .session-status { font-size: 10.5px; padding: 3px 8px; }
+
+    .testi-grid { grid-template-columns: 1fr; gap: 10px; }
+    .testi-card p { font-size: 12px; }
+    .testi-author strong { font-size: 11.5px; }
+
+    .mentor-profile { padding: 16px 14px; }
+    .mentor-avatar { width: 52px; height: 52px; font-size: 20px; }
+    .mentor-profile h4 { font-size: 13px; }
+    .mentor-profile p { font-size: 11.5px; }
+
+    /* ── FOOTER ── */
+    .footer { padding: 14px 12px; font-size: 11.5px; }
+    .footer .social { font-size: 13px; gap: 10px; }
+
+    /* ── PLAN FEATURED BADGE offset fix ── */
+    .plan-card.featured { margin-top: 12px; }
+  }
+
+  /* ── Small phones (max 420px) ── */
+  @media (max-width: 420px) {
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+    .content-cards { grid-template-columns: 1fr; }
+    .course-grid { grid-template-columns: 1fr; }
+    .members-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-slider { height: 220px; }
+    .slide-content h2 { font-size: 16px; }
+    .login-hero h1 { font-size: 20px; }
+    .mainnav ul li a { font-size: 10px; padding: 8px 8px; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ────────────────────────────
+     PROTOTYPE NAVIGATOR
+──────────────────────────── -->
+<div class="proto-nav">
+  <span class="label">▸ PANTALLAS:</span>
+  <button class="proto-btn active" onclick="goTo(1)">1 · Login</button>
+  <button class="proto-btn" onclick="goTo(2)">2 · Inicio</button>
+  <button class="proto-btn" onclick="goTo(3)">3 · Cursos</button>
+  <button class="proto-btn" onclick="goTo(4)">4 · Dashboard</button>
+  <button class="proto-btn" onclick="goTo(5)">5 · Contenido</button>
+  <button class="proto-btn" onclick="goTo(6)">6 · Detalle</button>
+  <button class="proto-btn" onclick="goTo(7)">7 · Comunidad</button>
+  <button class="proto-btn" onclick="goTo(8)">8 · Mentoría</button>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SHARED LOGO COMPONENT (reused inline)
+════════════════════════════════════════════ -->
+
+<!-- ════════════════════════════════════════════
+     SCREEN 1 · LOGIN
+════════════════════════════════════════════ -->
+<div class="screen active" id="s1">
+  <div class="topbar">
+    <div class="logo-wrap">
+      <svg class="logo-icon" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="8" width="22" height="16" rx="2" stroke="#5ab4f0" stroke-width="1.8" fill="none"/>
+        <line x1="11" y1="24" x2="11" y2="28" stroke="#5ab4f0" stroke-width="1.5"/>
+        <line x1="19" y1="24" x2="19" y2="28" stroke="#5ab4f0" stroke-width="1.5"/>
+        <line x1="8" y1="28" x2="22" y2="28" stroke="#5ab4f0" stroke-width="1.5"/>
+        <rect x="24" y="14" width="10" height="16" rx="1.5" stroke="#5ab4f0" stroke-width="1.5" fill="none"/>
+        <rect x="7" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".7"/>
+        <rect x="12" y="11" width="4" height="4" rx=".5" fill="#3a8fd4"/>
+        <rect x="17" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".9"/>
+        <rect x="7" y="16" width="4" height="4" rx=".5" fill="#3a8fd4" opacity=".8"/>
+        <rect x="12" y="16" width="4" height="4" rx=".5" fill="#5ab4f0"/>
+        <rect x="27" y="17" width="4" height="3" rx=".4" fill="#5ab4f0" opacity=".7"/>
+        <rect x="27" y="21" width="4" height="3" rx=".4" fill="#3a8fd4" opacity=".8"/>
+        <circle cx="34" cy="12" r="1.5" fill="#a8d8f5" opacity=".8"/>
+        <circle cx="36" cy="16" r="1" fill="#5ab4f0" opacity=".6"/>
+        <circle cx="35" cy="20" r="1.2" fill="#a8d8f5" opacity=".5"/>
+        <line x1="34" y1="12" x2="36" y2="16" stroke="#5ab4f0" stroke-width=".8" opacity=".5"/>
+        <line x1="36" y1="16" x2="35" y2="20" stroke="#5ab4f0" stroke-width=".8" opacity=".5"/>
+      </svg>
+      <div class="logo-text">
+        <span class="n365">365</span>
+        <span class="brand">
+          <span class="aprendo">aprendo</span><span class="comex">ComEx</span>
+        </span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-wp">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.557 4.123 1.532 5.855L0 24l6.303-1.516A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.893 0-3.677-.503-5.219-1.383l-.375-.222-3.743.9.938-3.653-.243-.388A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <div class="login-wrap">
+    <div class="login-hero">
+      <div class="login-deco"></div>
+      <div class="login-deco2"></div>
+      <h1>La plataforma de<br>aprendizaje de<br><span>Comercio Exterior</span></h1>
+      <p class="sub">Mentoría · Consultoría · Cursos · Talleres · Vivos de los lunes</p>
+      <div class="promo-cards">
+        <div class="promo-card">
+          <div class="pci">📦</div>
+          <div>
+            <h4>Cursos de Comercio Exterior</h4>
+            <p>ALTA importador/exportador, SIM, clasificación arancelaria y más</p>
+          </div>
+        </div>
+        <div class="promo-card">
+          <div class="pci">📅</div>
+          <div>
+            <h4>Talleres Mensuales en Vivo</h4>
+            <p>Normativa · INCOTERMS · Operativa SIM — Enero 2025</p>
+          </div>
+        </div>
+        <div class="promo-card">
+          <div class="pci">🎓</div>
+          <div>
+            <h4>Mentoría Personalizada</h4>
+            <p>Acompañamiento para importadores, exportadores y despachantes</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-panel">
+      <div class="panel-logo">
+        <div class="n365" style="font-family:'Montserrat',sans-serif;font-size:12px;font-weight:300;color:var(--blue-brand);letter-spacing:2px">365</div>
+        <div class="brand" style="font-family:'Montserrat',sans-serif;font-size:22px">
+          <span class="aprendo">aprendo</span><span class="comex" style="font-weight:800;color:var(--navy-deep)">ComEx</span>
+        </div>
+      </div>
+
+      <h3>🔐 Ingresar a mi cuenta</h3>
+
+      <div class="form-group">
+        <label>CUIT o DNI</label>
+        <input type="text" placeholder="Ej: 20-12345678-9">
+      </div>
+      <div class="form-group">
+        <label>Mail o Red social</label>
+        <input type="email" placeholder="tu@email.com">
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" placeholder="••••••••">
+      </div>
+
+      <button class="btn-primary" onclick="goTo(2)">Acceder →</button>
+
+      <hr class="sep">
+      <div class="login-links">
+        <a href="#">¿Olvidaste tu contraseña?</a>
+        <a href="#">Acceder con Google</a>
+        <a href="#">Acceder con WhatsApp</a>
+      </div>
+      <div class="login-note">
+        <p>¿Todavía no tenés cuenta?</p>
+        <a href="#">Registrarme gratis</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     SCREEN 2 · INICIO (con slider)
+════════════════════════════════════════════ -->
+<div class="screen" id="s2">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="logo-wrap" onclick="goTo(1)">
+      <svg class="logo-icon" viewBox="0 0 38 38" fill="none"><rect x="4" y="8" width="22" height="16" rx="2" stroke="#5ab4f0" stroke-width="1.8" fill="none"/><line x1="11" y1="24" x2="11" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="19" y1="24" x2="19" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="8" y1="28" x2="22" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><rect x="24" y="14" width="10" height="16" rx="1.5" stroke="#5ab4f0" stroke-width="1.5" fill="none"/><rect x="7" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".7"/><rect x="12" y="11" width="4" height="4" rx=".5" fill="#3a8fd4"/><rect x="17" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".9"/><rect x="7" y="16" width="4" height="4" rx=".5" fill="#3a8fd4" opacity=".8"/><rect x="12" y="16" width="4" height="4" rx=".5" fill="#5ab4f0"/><rect x="27" y="17" width="4" height="3" rx=".4" fill="#5ab4f0" opacity=".7"/><rect x="27" y="21" width="4" height="3" rx=".4" fill="#3a8fd4" opacity=".8"/><circle cx="34" cy="12" r="1.5" fill="#a8d8f5" opacity=".8"/><circle cx="36" cy="16" r="1" fill="#5ab4f0" opacity=".6"/><circle cx="35" cy="20" r="1.2" fill="#a8d8f5" opacity=".5"/><line x1="34" y1="12" x2="36" y2="16" stroke="#5ab4f0" stroke-width=".8" opacity=".5"/><line x1="36" y1="16" x2="35" y2="20" stroke="#5ab4f0" stroke-width=".8" opacity=".5"/></svg>
+      <div class="logo-text"><span class="n365">365</span><span class="brand"><span class="aprendo">aprendo</span><span class="comex">ComEx</span></span></div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-wp">WhatsApp</button>
+      <span class="user-chip">Hola, <strong>María</strong></span>
+    </div>
+  </div>
+
+  <!-- Hero Slider -->
+  <div class="hero-slider" id="slider2">
+    <div class="slide slide-1 show" data-slide="0">
+      <div class="slide-content">
+        <div class="slide-tag">Cursos disponibles</div>
+        <h2>Aprendé Comercio Exterior desde cero</h2>
+        <p>Práctica SIM · Clasificación · ALTA Importador/Exportador</p>
+        <button class="btn-slide" onclick="goTo(3)">Ver cursos →</button>
+      </div>
+    </div>
+    <div class="slide slide-2" data-slide="1">
+      <div class="slide-content">
+        <div class="slide-tag">Talleres enero 2025</div>
+        <h2>Normativa · INCOTERMS · Operativa SIM</h2>
+        <p>Talleres en vivo con certificado — inscribite antes del 20 de enero</p>
+        <button class="btn-slide">Inscribirme →</button>
+      </div>
+    </div>
+    <div class="slide slide-3" data-slide="2">
+      <div class="slide-content">
+        <div class="slide-tag">Vivos de los lunes</div>
+        <h2>Consultas en vivo todos los lunes</h2>
+        <p>Respondemos tus dudas sobre operaciones de comercio exterior en tiempo real</p>
+        <button class="btn-slide">Más info →</button>
+      </div>
+    </div>
+    <div class="slide slide-4" data-slide="3">
+      <div class="slide-content">
+        <div class="slide-tag">Mentoría personalizada</div>
+        <h2>Acompañamiento uno a uno con expertos</h2>
+        <p>Para importadores, exportadores, despachantes y profesionales del sector</p>
+        <button class="btn-slide">Consultá →</button>
+      </div>
+    </div>
+    <button class="slider-arrow prev" onclick="changeSlide(-1,'slider2')">‹</button>
+    <button class="slider-arrow next" onclick="changeSlide(1,'slider2')">›</button>
+    <div class="slider-dots">
+      <button class="dot active" onclick="setSlide(0,'slider2')"></button>
+      <button class="dot" onclick="setSlide(1,'slider2')"></button>
+      <button class="dot" onclick="setSlide(2,'slider2')"></button>
+      <button class="dot" onclick="setSlide(3,'slider2')"></button>
+    </div>
+  </div>
+
+  <div class="main-wrap">
+    <div class="content-area">
+      <div class="alert-box">
+        <span>📢</span>
+        <p><strong>Nuevo taller disponible:</strong> INCOTERMS 2025 — inscripciones abiertas hasta el 20 de enero.</p>
+      </div>
+
+      <div class="sec-header">
+        <h2>Más consultados</h2>
+        <a href="#" onclick="goTo(4)">Ver todos →</a>
+      </div>
+      <div class="cards-grid">
+        <div class="card" onclick="goTo(6)"><div class="card-icon">🏢</div><h4>ALTA Importador / Exportador</h4></div>
+        <div class="card" onclick="goTo(6)"><div class="card-icon">📝</div><h4>Examen ATA o ApD</h4></div>
+        <div class="card" onclick="goTo(5)"><div class="card-icon">💻</div><h4>Práctica SIM</h4></div>
+        <div class="card" onclick="goTo(5)"><div class="card-icon">🔍</div><h4>Clasificación Arancelaria</h4></div>
+        <div class="card" onclick="goTo(5)"><div class="card-icon">🚚</div><h4>Courrier</h4></div>
+        <div class="card" onclick="goTo(5)"><div class="card-icon">📋</div><h4>Normativa Actualizada</h4></div>
+      </div>
+
+      <div class="sec-header"><h2>Novedades</h2><a href="#">Ver más</a></div>
+      <div class="novedad" onclick="goTo(6)">
+        <div class="ndot"></div>
+        <div><h4>Resolución 2570 — Actualización ARCA</h4><p>Nueva normativa sobre declaraciones juradas en operaciones de importación</p></div>
+        <span class="chip chip-new">Nuevo</span>
+      </div>
+      <div class="novedad" onclick="goTo(6)">
+        <div class="ndot"></div>
+        <div><h4>Resolución 1971 — Régimen de Courrier</h4><p>Modificaciones al régimen simplificado de importación de encomiendas</p></div>
+      </div>
+      <div class="novedad" onclick="goTo(6)">
+        <div class="ndot"></div>
+        <div><h4>Guía práctica INCOTERMS 2025</h4><p>Descargá el material actualizado del taller de enero</p></div>
+        <span class="chip chip-hot">Popular</span>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <h3>Talleres de Enero</h3>
+      <div class="taller-card"><h4>NORMATIVA</h4><div class="tc-date">📅 Enero 15 · 19hs</div></div>
+      <div class="taller-card"><h4>INCOTERMS</h4><div class="tc-date">📅 Enero 22 · 19hs</div></div>
+      <div class="taller-card"><h4>OPERATIVA SIM</h4><div class="tc-date">📅 Enero 29 · 19hs</div></div>
+      <hr class="divider">
+      <h3>Mi cuenta</h3>
+      <ul class="sidebar-list">
+        <li><a href="#">Mis cursos</a></li>
+        <li><a href="#">Mis inscripciones</a></li>
+        <li><a href="#">Pagos y facturas</a></li>
+        <li><a href="#">Mentoría</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer"><a href="#">Inicio</a> · <a href="#">Contacto</a> · <a href="#">Términos</a><div class="social">📘 📸 ▶️ 💼</div></div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     SCREEN 3 · CURSOS
+════════════════════════════════════════════ -->
+<div class="screen" id="s3">
+  <div class="topbar">
+    <div class="logo-wrap" onclick="goTo(1)"><svg class="logo-icon" viewBox="0 0 38 38" fill="none"><rect x="4" y="8" width="22" height="16" rx="2" stroke="#5ab4f0" stroke-width="1.8" fill="none"/><rect x="7" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".7"/><rect x="12" y="11" width="4" height="4" rx=".5" fill="#3a8fd4"/><rect x="17" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".9"/><rect x="7" y="16" width="4" height="4" rx=".5" fill="#3a8fd4" opacity=".8"/><rect x="12" y="16" width="4" height="4" rx=".5" fill="#5ab4f0"/><line x1="11" y1="24" x2="11" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="19" y1="24" x2="19" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="8" y1="28" x2="22" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><rect x="24" y="14" width="10" height="16" rx="1.5" stroke="#5ab4f0" stroke-width="1.5" fill="none"/></svg><div class="logo-text"><span class="n365">365</span><span class="brand"><span class="aprendo">aprendo</span><span class="comex">ComEx</span></span></div></div>
+    <div class="topbar-right"><button class="btn-wp">WhatsApp</button></div>
+  </div>
+  <div class="mainnav"><ul>
+    <li><a href="#" onclick="goTo(2)">Inicio</a></li>
+    <li><a href="#" class="active">Cursos</a></li>
+    <li><a href="#" onclick="goTo(4)">Mi espacio</a></li>
+    <li><a href="#">Comunidad</a></li>
+    <li><a href="#">Mentoría</a></li>
+  </ul></div>
+
+  <div class="main-wrap">
+    <div class="content-area">
+      <div class="sec-header"><h2>Cursos disponibles</h2></div>
+      <div class="tag-row">
+        <div class="tag active">Todos</div>
+        <div class="tag">Operativa</div>
+        <div class="tag">Clasificación</div>
+        <div class="tag">Exámenes</div>
+        <div class="tag">Valoración</div>
+      </div>
+      <div class="course-grid">
+        <div class="course-card" onclick="goTo(6)">
+          <div class="course-thumb" style="background:linear-gradient(135deg,#1a2a6c,#1e5fa0)">💻</div>
+          <div class="course-body"><h4>Práctica SIM</h4><p>Simulación completa del sistema SIM de ARCA</p><span class="course-tag">Operativa</span></div>
+        </div>
+        <div class="course-card" onclick="goTo(6)">
+          <div class="course-thumb" style="background:linear-gradient(135deg,#1e3a8a,#3a8fd4)">🔍</div>
+          <div class="course-body"><h4>Clasificación Arancelaria</h4><p>NCM, criterios de clasificación y casos prácticos</p><span class="course-tag">Clasificación</span></div>
+        </div>
+        <div class="course-card" onclick="goTo(6)">
+          <div class="course-thumb" style="background:linear-gradient(135deg,#0f3460,#5ab4f0)">📝</div>
+          <div class="course-body"><h4>Examen ATA</h4><p>Temario completo, ejercicios y simulacros</p><span class="course-tag">Examen</span></div>
+        </div>
+        <div class="course-card" onclick="goTo(6)">
+          <div class="course-thumb" style="background:linear-gradient(135deg,#162058,#2878c8)">📋</div>
+          <div class="course-body"><h4>Examen Ap.Da</h4><p>Contenidos actualizados orientados al examen</p><span class="course-tag">Examen</span></div>
+        </div>
+        <div class="course-card" onclick="goTo(6)">
+          <div class="course-thumb" style="background:linear-gradient(135deg,#1a2a6c,#a8d8f5)">💰</div>
+          <div class="course-body"><h4>Valoración Aduanera</h4><p>Métodos OMC y casos prácticos</p><span class="course-tag">Valoración</span></div>
+        </div>
+        <div class="course-card" onclick="goTo(6)">
+          <div class="course-thumb" style="background:linear-gradient(135deg,#1e3a8a,#3a8fd4)">🏢</div>
+          <div class="course-body"><h4>ALTA Importador / Exportador</h4><p>Paso a paso para inscripción como operador</p><span class="course-tag">Operativa</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <h3>Mi progreso</h3>
+      <ul class="sidebar-list">
+        <li><span>✅ Práctica SIM — 100%</span></li>
+        <li><span>🔄 Clasificación — 45%</span></li>
+        <li><span>⏳ Examen ATA — Sin iniciar</span></li>
+      </ul>
+      <hr class="divider">
+      <h3>Próximo taller</h3>
+      <div class="taller-card"><h4>INCOTERMS 2025</h4><div class="tc-date">📅 Mié 22 Ene · 19hs</div></div>
+    </div>
+  </div>
+  <div class="footer"><a href="#">Inicio</a> · <a href="#">Contacto</a><p style="margin-top:5px">© 2025 365aprendoComEx</p></div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     SCREEN 4 · DASHBOARD
+════════════════════════════════════════════ -->
+<div class="screen" id="s4">
+  <div class="topbar">
+    <div class="logo-wrap" onclick="goTo(1)"><svg class="logo-icon" viewBox="0 0 38 38" fill="none"><rect x="4" y="8" width="22" height="16" rx="2" stroke="#5ab4f0" stroke-width="1.8" fill="none"/><rect x="7" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".7"/><rect x="12" y="11" width="4" height="4" rx=".5" fill="#3a8fd4"/><rect x="17" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".9"/><rect x="7" y="16" width="4" height="4" rx=".5" fill="#3a8fd4" opacity=".8"/><rect x="12" y="16" width="4" height="4" rx=".5" fill="#5ab4f0"/><line x1="11" y1="24" x2="11" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="19" y1="24" x2="19" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="8" y1="28" x2="22" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><rect x="24" y="14" width="10" height="16" rx="1.5" stroke="#5ab4f0" stroke-width="1.5" fill="none"/></svg><div class="logo-text"><span class="n365">365</span><span class="brand"><span class="aprendo">aprendo</span><span class="comex">ComEx</span></span></div></div>
+    <div class="topbar-right"><button class="btn-wp">WhatsApp</button><span style="font-size:18px;cursor:pointer" title="Notificaciones">🔔</span></div>
+  </div>
+  <div class="mainnav"><ul>
+    <li><a href="#">Pagos y Transferencias</a></li>
+    <li><a href="#" onclick="goTo(3)">Mis Cursos</a></li>
+    <li><a href="#" class="active">Programas e Inscripciones</a></li>
+    <li><a href="#">Comunidad</a></li>
+    <li><a href="#">Mentoría</a></li>
+    <li><a href="#">Notificaciones <span class="notif-dot">3</span></a></li>
+  </ul></div>
+  <div class="searchbar">
+    <input type="text" placeholder="Buscá cursos, talleres, normativas, resoluciones...">
+    <button>BUSCAR</button>
+  </div>
+
+  <div class="main-wrap">
+    <div class="content-area">
+      <div class="sec-header"><h2>Más vistos</h2><a href="#" onclick="goTo(5)">Ver todo →</a></div>
+      <ul class="mv-list">
+        <li onclick="goTo(6)"><span class="mv-num">1</span><div class="mv-info"><div class="mv-title">Resolución 2570</div><div class="mv-cat">Normativa · Importación</div></div><span class="chip chip-new">Nuevo</span></li>
+        <li onclick="goTo(6)"><span class="mv-num">2</span><div class="mv-info"><div class="mv-title">Resolución 1971</div><div class="mv-cat">Normativa · Courrier</div></div><span class="chip chip-hot">Popular</span></li>
+        <li onclick="goTo(6)"><span class="mv-num">3</span><div class="mv-info"><div class="mv-title">INCOTERMS 2025 — Guía práctica</div><div class="mv-cat">Material de taller · Internacional</div></div></li>
+        <li onclick="goTo(5)"><span class="mv-num">4</span><div class="mv-info"><div class="mv-title">Taller Operativa SIM — Enero</div><div class="mv-cat">Taller en vivo</div></div></li>
+        <li onclick="goTo(5)"><span class="mv-num">5</span><div class="mv-info"><div class="mv-title">Aceptación de autorizaciones electrónicas</div><div class="mv-cat">Guía paso a paso · Sistemas</div></div></li>
+        <li onclick="goTo(5)"><span class="mv-num">6</span><div class="mv-info"><div class="mv-title">Vuelo aéreo — Logística internacional</div><div class="mv-cat">Módulo · Transporte</div></div></li>
+      </ul>
+      <hr class="divider">
+      <div class="sec-header"><h2>Novedades recientes</h2></div>
+      <div class="novedad" onclick="goTo(6)"><div class="ndot"></div><div><h4>Actualización régimen de courrier</h4><p>Nuevos umbrales de valor y procedimientos simplificados</p></div></div>
+      <div class="novedad" onclick="goTo(6)"><div class="ndot"></div><div><h4>Nuevos talleres para febrero</h4><p>Inscripciones abiertas: Práctica SIM avanzada, Valoración, Clasificación NCM</p></div></div>
+    </div>
+    <div class="sidebar">
+      <h3>Mi resumen</h3>
+      <ul class="sidebar-list">
+        <li><a href="#">📚 Mis cursos (3)</a></li>
+        <li><a href="#">📅 Próximas inscripciones</a></li>
+        <li><a href="#">💳 Mis pagos</a></li>
+        <li><a href="#">🏆 Mis certificados</a></li>
+      </ul>
+      <hr class="divider">
+      <h3>Comunidad</h3>
+      <ul class="sidebar-list">
+        <li><a href="#">💬 Foro general</a></li>
+        <li><a href="#">❓ Preguntas frecuentes</a></li>
+        <li><a href="#">📎 Recursos compartidos</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer"><a href="#">Inicio</a> · <a href="#">Contacto</a> · <a href="#">Términos</a><p style="margin-top:5px">© 2025 365aprendoComEx</p></div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     SCREEN 5 · CONTENIDO
+════════════════════════════════════════════ -->
+<div class="screen" id="s5">
+  <div class="topbar">
+    <div class="logo-wrap" onclick="goTo(1)"><svg class="logo-icon" viewBox="0 0 38 38" fill="none"><rect x="4" y="8" width="22" height="16" rx="2" stroke="#5ab4f0" stroke-width="1.8" fill="none"/><rect x="7" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".7"/><rect x="12" y="11" width="4" height="4" rx=".5" fill="#3a8fd4"/><rect x="17" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".9"/><rect x="7" y="16" width="4" height="4" rx=".5" fill="#3a8fd4" opacity=".8"/><rect x="12" y="16" width="4" height="4" rx=".5" fill="#5ab4f0"/><line x1="11" y1="24" x2="11" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="19" y1="24" x2="19" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="8" y1="28" x2="22" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><rect x="24" y="14" width="10" height="16" rx="1.5" stroke="#5ab4f0" stroke-width="1.5" fill="none"/></svg><div class="logo-text"><span class="n365">365</span><span class="brand"><span class="aprendo">aprendo</span><span class="comex">ComEx</span></span></div></div>
+    <div class="topbar-right"><button class="btn-wp">WhatsApp</button></div>
+  </div>
+  <div class="mainnav"><ul>
+    <li><a href="#" onclick="goTo(4)">Pagos y Transferencias</a></li>
+    <li><a href="#" onclick="goTo(3)">Mis Cursos</a></li>
+    <li><a href="#" onclick="goTo(4)" class="active">Programas e Inscripciones</a></li>
+    <li><a href="#">Comunidad</a></li>
+    <li><a href="#">Mentoría</a></li>
+    <li><a href="#">Notificaciones</a></li>
+  </ul></div>
+  <div class="searchbar">
+    <input type="text" value="Aceptación" placeholder="Buscá contenido...">
+    <button>BUSCAR</button>
+  </div>
+
+  <div class="main-wrap">
+    <div class="content-area">
+      <div class="sec-header"><h2>Resultados para "Aceptación"</h2><a href="#" onclick="goTo(4)">← Volver</a></div>
+      <div class="content-cards">
+        <div class="content-card" onclick="goTo(6)"><div class="lbl">Guía · Sistemas</div><h4>Aceptación de autorizaciones electrónicas</h4><p>Paso a paso para validar autorizaciones en el sistema aduanero</p></div>
+        <div class="content-card" onclick="goTo(6)"><div class="lbl">Normativa · ARCA</div><h4>Aceptación de datos biométricos</h4><p>Proceso de alta y validación biométrica para operadores</p></div>
+        <div class="content-card" onclick="goTo(6)"><div class="lbl">Guía · Operativa</div><h4>Aceptación de Designación</h4><p>Procedimiento para aceptación como despachante</p></div>
+        <div class="content-card" onclick="goTo(6)"><div class="lbl">Material · Taller</div><h4>Módulo B — Autorizaciones</h4><p>Material del taller de Normativa Enero 2025</p></div>
+        <div class="content-card" onclick="goTo(6)"><div class="lbl">Guía · Sistemas</div><h4>Módulo C — Datos de acceso</h4><p>Configuración de clave y perfil en el portal</p></div>
+        <div class="content-card" onclick="goTo(6)"><div class="lbl">Módulo · Operativa</div><h4>Módulo D — Designaciones</h4><p>Gestión de designaciones de representantes</p></div>
+        <div class="content-card" onclick="goTo(6)"><div class="lbl">Práctica · SIM</div><h4>Módulo E — Validación SIM</h4><p>Ejercicios de validación en el sistema integrado</p></div>
+        <div class="content-card" onclick="goTo(6)"><div class="lbl">Recursos · Normativa</div><h4>Módulo F — Normativa vigente</h4><p>Compendio de resoluciones de importación</p></div>
+        <div class="content-card" onclick="goTo(6)"><div class="lbl">Taller · Enero</div><h4>Módulo G — Casos prácticos</h4><p>Ejercicios resueltos y simulacros</p></div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <h3>Filtrar por tipo</h3>
+      <ul class="sidebar-list">
+        <li><a href="#">Todos (9)</a></li>
+        <li><a href="#">Guías (3)</a></li>
+        <li><a href="#">Normativa (2)</a></li>
+        <li><a href="#">Talleres (2)</a></li>
+        <li><a href="#">Práctica (1)</a></li>
+        <li><a href="#">Módulos (1)</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer"><a href="#">Inicio</a> · <a href="#">Contacto</a><p style="margin-top:5px">© 2025 365aprendoComEx</p></div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     SCREEN 6 · DETALLE
+════════════════════════════════════════════ -->
+<div class="screen" id="s6">
+  <div class="topbar">
+    <div class="logo-wrap" onclick="goTo(1)"><svg class="logo-icon" viewBox="0 0 38 38" fill="none"><rect x="4" y="8" width="22" height="16" rx="2" stroke="#5ab4f0" stroke-width="1.8" fill="none"/><rect x="7" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".7"/><rect x="12" y="11" width="4" height="4" rx=".5" fill="#3a8fd4"/><rect x="17" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".9"/><rect x="7" y="16" width="4" height="4" rx=".5" fill="#3a8fd4" opacity=".8"/><rect x="12" y="16" width="4" height="4" rx=".5" fill="#5ab4f0"/><line x1="11" y1="24" x2="11" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="19" y1="24" x2="19" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="8" y1="28" x2="22" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><rect x="24" y="14" width="10" height="16" rx="1.5" stroke="#5ab4f0" stroke-width="1.5" fill="none"/></svg><div class="logo-text"><span class="n365">365</span><span class="brand"><span class="aprendo">aprendo</span><span class="comex">ComEx</span></span></div></div>
+    <div class="topbar-right"><button class="btn-wp">WhatsApp</button></div>
+  </div>
+  <div class="mainnav"><ul>
+    <li><a href="#" onclick="goTo(4)">Pagos y Transferencias</a></li>
+    <li><a href="#" onclick="goTo(3)">Mis Cursos</a></li>
+    <li><a href="#" onclick="goTo(4)" class="active">Programas e Inscripciones</a></li>
+    <li><a href="#">Comunidad</a></li>
+    <li><a href="#">Mentoría</a></li>
+    <li><a href="#">Notificaciones</a></li>
+  </ul></div>
+
+  <div class="detail-wrap">
+    <div class="detail-sidebar">
+      <div class="ds-cat">Aceptación de autorizaciones</div>
+      <ul>
+        <li><a href="#" class="active">Resolución</a></li>
+        <li><a href="#">Manual</a></li>
+        <li><a href="#">Resumen</a></li>
+        <li><a href="#">Preguntas frecuentes</a></li>
+        <li><a href="#">Consignas de examen</a></li>
+      </ul>
+    </div>
+    <div class="detail-content">
+      <div class="breadcrumb"><a href="#" onclick="goTo(4)">Inicio</a> › <a href="#" onclick="goTo(5)">Programas e Inscripciones</a> › Aceptación de autorizaciones</div>
+      <h2>Aceptación de autorizaciones electrónicas</h2>
+      <div class="tag-row" style="margin-top:10px">
+        <span class="chip chip-new">Normativa 2025</span>
+        <span class="tag active" style="cursor:default">Sistemas ARCA</span>
+        <span class="tag" style="cursor:default">Operadores</span>
+      </div>
+      <div class="doc-box">
+        <h3>📄 Resolución aplicable</h3>
+        <p>La Resolución General 2570/ARCA establece el procedimiento para la aceptación de autorizaciones electrónicas por parte de los operadores de comercio exterior. Define plazos, formatos y requisitos técnicos para la validación de identidad en el sistema SIM.</p>
+        <p style="margin-top:10px">Los operadores deberán contar con CUIT activo, clave fiscal nivel 3 y certificado digital vigente para completar el proceso dentro del portal habilitado por ARCA.</p>
+        <div class="doc-meta">
+          <span>📅 Vigente desde: Enero 2025</span>
+          <span>🏛 Organismo: ARCA</span>
+          <span>📊 Normativa / Sistemas</span>
+        </div>
+        <button class="btn-dl">⬇ Descargar resolución completa</button>
+      </div>
+      <div class="doc-box">
+        <h3>✅ Pasos para la aceptación</h3>
+        <p>
+          1. Accedé al portal ARCA con CUIT y Clave Fiscal nivel 3.<br>
+          2. Ingresá a <strong>Servicios Habilitados → Autorizaciones Electrónicas</strong>.<br>
+          3. Seleccioná la autorización pendiente y revisá los datos del solicitante.<br>
+          4. Completá la validación biométrica si el sistema lo requiere.<br>
+          5. Confirmá la aceptación y guardá el comprobante con número de transacción.
+        </p>
+        <button class="btn-dl">▶ Ver tutorial en video</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><a href="#">Inicio</a> · <a href="#">Contacto</a><p style="margin-top:5px">© 2025 365aprendoComEx</p></div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     SCREEN 7 · COMUNIDAD
+════════════════════════════════════════════ -->
+<div class="screen" id="s7">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="logo-wrap" onclick="goTo(1)">
+      <svg class="logo-icon" viewBox="0 0 38 38" fill="none"><rect x="4" y="8" width="22" height="16" rx="2" stroke="#5ab4f0" stroke-width="1.8" fill="none"/><rect x="7" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".7"/><rect x="12" y="11" width="4" height="4" rx=".5" fill="#3a8fd4"/><rect x="17" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".9"/><rect x="7" y="16" width="4" height="4" rx=".5" fill="#3a8fd4" opacity=".8"/><rect x="12" y="16" width="4" height="4" rx=".5" fill="#5ab4f0"/><line x1="11" y1="24" x2="11" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="19" y1="24" x2="19" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="8" y1="28" x2="22" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><rect x="24" y="14" width="10" height="16" rx="1.5" stroke="#5ab4f0" stroke-width="1.5" fill="none"/></svg>
+      <div class="logo-text"><span class="n365">365</span><span class="brand"><span class="aprendo">aprendo</span><span class="comex">ComEx</span></span></div>
+    </div>
+    <div class="topbar-right"><button class="btn-wp">WhatsApp</button><span class="user-chip">Hola, <strong>María</strong></span></div>
+  </div>
+  <div class="mainnav"><ul>
+    <li><a href="#" onclick="goTo(2)">Inicio</a></li>
+    <li><a href="#" onclick="goTo(3)">Mis Cursos</a></li>
+    <li><a href="#" onclick="goTo(4)">Programas e Inscripciones</a></li>
+    <li><a href="#" class="active">Comunidad</a></li>
+    <li><a href="#" onclick="goTo(8)">Mentoría</a></li>
+    <li><a href="#">Notificaciones <span class="notif-dot">3</span></a></li>
+  </ul></div>
+
+  <div class="main-wrap">
+    <div class="content-area">
+      <div class="sec-header" style="margin-bottom:18px">
+        <h2>Comunidad 365aprendoComEx</h2>
+        <span style="font-size:12px;color:var(--gray-mid)">👥 248 miembros activos</span>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab(this,'tab-feed')">📰 Feed</button>
+        <button class="tab-btn" onclick="switchTab(this,'tab-qa')">❓ Preguntas y Respuestas</button>
+        <button class="tab-btn" onclick="switchTab(this,'tab-dir')">👥 Directorio</button>
+        <button class="tab-btn" onclick="switchTab(this,'tab-rec')">📎 Recursos</button>
+      </div>
+
+      <!-- TAB: FEED -->
+      <div class="tab-panel active" id="tab-feed">
+        <div class="new-post-box">
+          <div class="post-avatar">M</div>
+          <input type="text" placeholder="Compartí algo con la comunidad...">
+          <button class="btn-post">Publicar</button>
+        </div>
+
+        <div class="post-box">
+          <div class="post-avatar">LA</div>
+          <div class="post-body">
+            <div class="post-meta">
+              <strong>Laura Acosta</strong>
+              <span>· Importadora · hace 2hs</span>
+            </div>
+            <p>¡Aprobé el examen ATA! 🎉 Gracias a los materiales del curso y a los vivos de los lunes. Si alguien está preparándose, me preguntan sin problema.</p>
+            <div class="post-actions">
+              <button class="post-act">👍 14</button>
+              <button class="post-act">💬 6 comentarios</button>
+              <button class="post-act">↗ Compartir</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="post-box">
+          <div class="post-avatar" style="background:linear-gradient(135deg,#1e5fa0,#5ab4f0)">RC</div>
+          <div class="post-body">
+            <div class="post-meta">
+              <strong>Roberto Castillo</strong>
+              <span>· Despachante · hace 5hs</span>
+            </div>
+            <p>¿Alguien trabajó con la nueva Resolución 2570? Tengo dudas sobre los plazos para presentación de DJA en importaciones de insumos industriales.</p>
+            <div class="post-actions">
+              <button class="post-act">👍 8</button>
+              <button class="post-act">💬 12 comentarios</button>
+              <button class="post-act">↗ Compartir</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="post-box">
+          <div class="post-avatar" style="background:linear-gradient(135deg,#1a7f4b,#3a8fd4)">MP</div>
+          <div class="post-body">
+            <div class="post-meta">
+              <strong>Marcela Pérez</strong>
+              <span>· Exportadora · ayer</span>
+            </div>
+            <p>Comparto el resumen que armé sobre INCOTERMS 2025 del último taller. Espero que les sirva 📄</p>
+            <div class="post-actions">
+              <button class="post-act">👍 32</button>
+              <button class="post-act">💬 9 comentarios</button>
+              <button class="post-act">↗ Compartir</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="post-box">
+          <div class="post-avatar" style="background:linear-gradient(135deg,#7c3aed,#3a8fd4)">GF</div>
+          <div class="post-body">
+            <div class="post-meta">
+              <strong>Gastón Ferreira</strong>
+              <span>· Estudiante · hace 2 días</span>
+            </div>
+            <p>Primera vez que uso el SIM y fue más intuitivo de lo que pensaba. El curso de Práctica SIM te prepara muy bien para la realidad del sistema.</p>
+            <div class="post-actions">
+              <button class="post-act">👍 21</button>
+              <button class="post-act">💬 4 comentarios</button>
+              <button class="post-act">↗ Compartir</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Q&A -->
+      <div class="tab-panel" id="tab-qa">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="btn-post" style="border-radius:5px">+ Nueva pregunta</button>
+        </div>
+
+        <div class="qa-item">
+          <div class="qa-q">
+            <div class="qa-icon">❓</div>
+            <div style="flex:1">
+              <strong>¿Cuál es el plazo para rectificar una DJA después de presentada?</strong>
+              <p>Presenté una DJA con un error en el código arancelario. ¿Cuánto tiempo tengo para corregirla sin multa?</p>
+              <div class="qa-meta">
+                <span>👤 Laura Acosta</span>
+                <span>· 3 respuestas</span>
+                <span>· hace 1 día</span>
+              </div>
+            </div>
+            <span class="qa-badge">✅ Respondida</span>
+          </div>
+        </div>
+
+        <div class="qa-item">
+          <div class="qa-q">
+            <div class="qa-icon">❓</div>
+            <div style="flex:1">
+              <strong>¿Qué documentación se necesita para ALTA como Importador por primera vez?</strong>
+              <p>Soy contador y mi cliente quiere comenzar a importar desde China. ¿Por dónde arranco?</p>
+              <div class="qa-meta">
+                <span>👤 Diego Morales</span>
+                <span>· 7 respuestas</span>
+                <span>· hace 2 días</span>
+              </div>
+            </div>
+            <span class="qa-badge">✅ Respondida</span>
+          </div>
+        </div>
+
+        <div class="qa-item">
+          <div class="qa-q">
+            <div class="qa-icon">❓</div>
+            <div style="flex:1">
+              <strong>¿El régimen de Courrier aplica para envíos desde Estados Unidos?</strong>
+              <p>Tengo un proveedor en Miami que manda paquetes regulares. ¿Cómo se clasifica?</p>
+              <div class="qa-meta">
+                <span>👤 Sofía Ramos</span>
+                <span>· 2 respuestas</span>
+                <span>· hace 3 días</span>
+              </div>
+            </div>
+            <span class="qa-badge open">💬 Abierta</span>
+          </div>
+        </div>
+
+        <div class="qa-item">
+          <div class="qa-q">
+            <div class="qa-icon">❓</div>
+            <div style="flex:1">
+              <strong>¿Cómo se calcula el valor en aduana para productos con descuentos comerciales?</strong>
+              <p>Mi proveedor me aplica un 15% de descuento en factura. ¿Se considera ese precio para la base imponible?</p>
+              <div class="qa-meta">
+                <span>👤 Hernán Vega</span>
+                <span>· 0 respuestas</span>
+                <span>· hoy</span>
+              </div>
+            </div>
+            <span class="qa-badge open">💬 Sin respuesta</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: DIRECTORIO -->
+      <div class="tab-panel" id="tab-dir">
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+          <input type="text" placeholder="Buscar miembro..." style="border:1.5px solid var(--border);border-radius:5px;padding:8px 12px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none;flex:1;max-width:300px">
+          <div class="tag active" style="cursor:default">Todos</div>
+          <div class="tag">Importador</div>
+          <div class="tag">Exportador</div>
+          <div class="tag">Despachante</div>
+        </div>
+        <div class="members-grid">
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#1a2a6c,#3a8fd4)">LA</div>
+            <h4>Laura Acosta</h4>
+            <p>Buenos Aires</p>
+            <span class="member-role role-impo">Importadora</span>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#1e5fa0,#5ab4f0)">RC</div>
+            <h4>Roberto Castillo</h4>
+            <p>Córdoba</p>
+            <span class="member-role role-despa">Despachante</span>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#1a7f4b,#3a8fd4)">MP</div>
+            <h4>Marcela Pérez</h4>
+            <p>Rosario</p>
+            <span class="member-role role-expo">Exportadora</span>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#7c3aed,#3a8fd4)">GF</div>
+            <h4>Gastón Ferreira</h4>
+            <p>Mendoza</p>
+            <span class="member-role role-profe">Estudiante</span>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#b85000,#3a8fd4)">DM</div>
+            <h4>Diego Morales</h4>
+            <p>Buenos Aires</p>
+            <span class="member-role role-profe">Contador</span>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#162058,#5ab4f0)">SR</div>
+            <h4>Sofía Ramos</h4>
+            <p>La Plata</p>
+            <span class="member-role role-impo">Importadora</span>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#1a2a6c,#a8d8f5)">HV</div>
+            <h4>Hernán Vega</h4>
+            <p>Tucumán</p>
+            <span class="member-role role-expo">Exportador</span>
+          </div>
+          <div class="member-card">
+            <div class="member-avatar" style="background:linear-gradient(135deg,#1e3a8a,#3a8fd4)">AG</div>
+            <h4>Ana González</h4>
+            <p>Salta</p>
+            <span class="member-role role-despa">Despachante</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: RECURSOS -->
+      <div class="tab-panel" id="tab-rec">
+        <div class="sec-header" style="margin-bottom:14px"><h2>Recursos compartidos</h2><button class="btn-post" style="border-radius:5px;font-size:12px;padding:6px 14px">+ Subir recurso</button></div>
+
+        <div class="resource-item">
+          <div class="res-icon" style="background:#ddeeff">📄</div>
+          <div class="res-info">
+            <strong>Resumen INCOTERMS 2025</strong>
+            <span>PDF · Subido por Marcela Pérez · 156 descargas</span>
+          </div>
+          <button class="res-dl">⬇ Bajar</button>
+        </div>
+        <div class="resource-item">
+          <div class="res-icon" style="background:#e6f4ed">📊</div>
+          <div class="res-info">
+            <strong>Tabla de posiciones NCM — Textiles</strong>
+            <span>Excel · Subido por Roberto Castillo · 89 descargas</span>
+          </div>
+          <button class="res-dl">⬇ Bajar</button>
+        </div>
+        <div class="resource-item">
+          <div class="res-icon" style="background:#fff0e0">🎥</div>
+          <div class="res-info">
+            <strong>Grabación — Taller Normativa Enero 2025</strong>
+            <span>Video · Material del taller · 203 visualizaciones</span>
+          </div>
+          <button class="res-dl">▶ Ver</button>
+        </div>
+        <div class="resource-item">
+          <div class="res-icon" style="background:#f0e8fb">📋</div>
+          <div class="res-info">
+            <strong>Guía de trámites — ALTA Importador</strong>
+            <span>PDF · Subido por Laura Acosta · 312 descargas</span>
+          </div>
+          <button class="res-dl">⬇ Bajar</button>
+        </div>
+        <div class="resource-item">
+          <div class="res-icon" style="background:#ddeeff">🔗</div>
+          <div class="res-info">
+            <strong>Link — Portal de consultas ARCA (AFIP)</strong>
+            <span>Enlace externo · Verificado · 445 clics</span>
+          </div>
+          <button class="res-dl">↗ Abrir</button>
+        </div>
+        <div class="resource-item">
+          <div class="res-icon" style="background:#e6f4ed">📄</div>
+          <div class="res-info">
+            <strong>Consignas examen Ap.Da — últimas 3 convocatorias</strong>
+            <span>PDF · Subido por la plataforma · 278 descargas</span>
+          </div>
+          <button class="res-dl">⬇ Bajar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3>Mi perfil</h3>
+      <div style="text-align:center;margin-bottom:16px">
+        <div class="post-avatar" style="width:52px;height:52px;font-size:18px;margin:0 auto 8px">M</div>
+        <div style="font-size:13px;font-weight:700;color:var(--navy-deep);font-family:'Montserrat',sans-serif">María López</div>
+        <div style="font-size:12px;color:var(--text-light);margin:2px 0 6px">Importadora · Buenos Aires</div>
+        <span class="member-role role-impo">Importadora</span>
+      </div>
+      <hr class="divider">
+      <h3>Estadísticas</h3>
+      <ul class="sidebar-list">
+        <li><span>💬 12 publicaciones</span></li>
+        <li><span>❓ 5 preguntas</span></li>
+        <li><span>📎 3 recursos subidos</span></li>
+        <li><span>👍 87 me gusta recibidos</span></li>
+      </ul>
+      <hr class="divider">
+      <h3>Más activos</h3>
+      <ul class="sidebar-list">
+        <li><span>🥇 Roberto Castillo</span></li>
+        <li><span>🥈 Marcela Pérez</span></li>
+        <li><span>🥉 Laura Acosta</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="#">Inicio</a> · <a href="#">Contacto</a> · <a href="#">Términos</a>
+    <p style="margin-top:5px">© 2025 365aprendoComEx</p>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     SCREEN 8 · MENTORÍA
+════════════════════════════════════════════ -->
+<div class="screen" id="s8">
+  <div class="topbar">
+    <div class="logo-wrap" onclick="goTo(1)">
+      <svg class="logo-icon" viewBox="0 0 38 38" fill="none"><rect x="4" y="8" width="22" height="16" rx="2" stroke="#5ab4f0" stroke-width="1.8" fill="none"/><rect x="7" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".7"/><rect x="12" y="11" width="4" height="4" rx=".5" fill="#3a8fd4"/><rect x="17" y="11" width="4" height="4" rx=".5" fill="#5ab4f0" opacity=".9"/><rect x="7" y="16" width="4" height="4" rx=".5" fill="#3a8fd4" opacity=".8"/><rect x="12" y="16" width="4" height="4" rx=".5" fill="#5ab4f0"/><line x1="11" y1="24" x2="11" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="19" y1="24" x2="19" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><line x1="8" y1="28" x2="22" y2="28" stroke="#5ab4f0" stroke-width="1.5"/><rect x="24" y="14" width="10" height="16" rx="1.5" stroke="#5ab4f0" stroke-width="1.5" fill="none"/></svg>
+      <div class="logo-text"><span class="n365">365</span><span class="brand"><span class="aprendo">aprendo</span><span class="comex">ComEx</span></span></div>
+    </div>
+    <div class="topbar-right"><button class="btn-wp">WhatsApp</button><span class="user-chip">Hola, <strong>María</strong></span></div>
+  </div>
+  <div class="mainnav"><ul>
+    <li><a href="#" onclick="goTo(2)">Inicio</a></li>
+    <li><a href="#" onclick="goTo(3)">Mis Cursos</a></li>
+    <li><a href="#" onclick="goTo(4)">Programas e Inscripciones</a></li>
+    <li><a href="#" onclick="goTo(7)">Comunidad</a></li>
+    <li><a href="#" class="active">Mentoría</a></li>
+    <li><a href="#">Notificaciones <span class="notif-dot">3</span></a></li>
+  </ul></div>
+
+  <div class="main-wrap">
+    <div class="content-area">
+
+      <!-- Hero mentoría -->
+      <div class="mentoria-hero">
+        <div class="mh-deco"></div>
+        <h2>🎓 Mentoría personalizada en Comercio Exterior</h2>
+        <p>Sesiones individuales y grupales con expertos del sector. Resolvé tus dudas, avanzá en tu carrera y tomá mejores decisiones en tus operaciones.</p>
+      </div>
+
+      <!-- Planes -->
+      <div class="sec-header"><h2>Modalidades de mentoría</h2></div>
+      <div class="plan-grid">
+
+        <div class="plan-card">
+          <div class="plan-icon">🎯</div>
+          <h3>Consulta Puntual</h3>
+          <p>Sesión única de 45 min por videollamada para resolver una duda específica.</p>
+          <ul class="plan-features">
+            <li>1 sesión de 45 minutos</li>
+            <li>Por videollamada (Zoom / Meet)</li>
+            <li>Grabación incluida</li>
+            <li>Consulta previa por escrito</li>
+          </ul>
+          <button class="btn-plan outline">Reservar sesión</button>
+        </div>
+
+        <div class="plan-card featured">
+          <div class="plan-badge">⭐ MÁS ELEGIDO</div>
+          <div class="plan-icon">🚀</div>
+          <h3>Mentoría 1 a 1 — Pack</h3>
+          <p>Acompañamiento continuo con sesiones semanales durante un mes.</p>
+          <ul class="plan-features">
+            <li>4 sesiones de 60 min</li>
+            <li>Seguimiento entre sesiones</li>
+            <li>Material personalizado</li>
+            <li>Acceso directo por WhatsApp</li>
+            <li>Grabaciones de todas las sesiones</li>
+          </ul>
+          <button class="btn-plan">Empezar mentoría</button>
+        </div>
+
+        <div class="plan-card">
+          <div class="plan-icon">👥</div>
+          <h3>Mentoría Grupal</h3>
+          <p>Sesiones en vivo con grupos reducidos de hasta 8 participantes.</p>
+          <ul class="plan-features">
+            <li>Grupos de máx. 8 personas</li>
+            <li>Sesiones de 90 minutos</li>
+            <li>Temario específico por grupo</li>
+            <li>Material compartido</li>
+            <li>Grabación disponible 30 días</li>
+          </ul>
+          <button class="btn-plan outline">Ver grupos disponibles</button>
+        </div>
+
+      </div>
+
+      <!-- Próximas sesiones -->
+      <div class="sec-header"><h2>Próximas sesiones grupales</h2><a href="#">Ver todas →</a></div>
+
+      <div class="session-item">
+        <div class="session-date"><div class="day">20</div><div class="month">Ene</div></div>
+        <div class="session-info">
+          <h4>Operativa de Importación — Casos prácticos</h4>
+          <p>👥 Grupal · 90 min · 19:00hs (ARG) · 5 lugares disponibles</p>
+        </div>
+        <span class="session-status status-open">Inscribirme</span>
+      </div>
+
+      <div class="session-item">
+        <div class="session-date"><div class="day">22</div><div class="month">Ene</div></div>
+        <div class="session-info">
+          <h4>Preparación Examen ATA — Grupo intensivo</h4>
+          <p>👥 Grupal · 90 min · 18:00hs (ARG) · Sin lugares disponibles</p>
+        </div>
+        <span class="session-status status-full">Completo</span>
+      </div>
+
+      <div class="session-item">
+        <div class="session-date"><div class="day">27</div><div class="month">Ene</div></div>
+        <div class="session-info">
+          <h4>Clasificación Arancelaria — Nivel avanzado</h4>
+          <p>👥 Grupal · 90 min · 19:00hs (ARG) · Inscripción próximamente</p>
+        </div>
+        <span class="session-status status-soon">Próximamente</span>
+      </div>
+
+      <div class="session-item">
+        <div class="session-date"><div class="day">29</div><div class="month">Ene</div></div>
+        <div class="session-info">
+          <h4>Mentoría 1 a 1 — Agenda tu sesión</h4>
+          <p>🎯 Individual · 60 min · Horarios a confirmar por WhatsApp</p>
+        </div>
+        <span class="session-status status-open">Reservar</span>
+      </div>
+
+      <hr class="divider">
+
+      <!-- Testimonios -->
+      <div class="sec-header"><h2>Lo que dicen nuestros alumnos</h2></div>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <p>"La mentoría 1 a 1 fue clave para entender cómo aplicar la normativa en mis operaciones reales. En 4 sesiones resolví dudas que tenía hace meses."</p>
+          <div class="testi-author">
+            <div class="testi-av" style="background:linear-gradient(135deg,#1a2a6c,#3a8fd4)">LA</div>
+            <div><strong>Laura Acosta</strong><span> · Importadora</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <p>"El grupo de preparación para el examen ATA fue excelente. Nos pasaron ejercicios específicos y la dinámica grupal ayuda muchísimo."</p>
+          <div class="testi-author">
+            <div class="testi-av" style="background:linear-gradient(135deg,#1e5fa0,#5ab4f0)">GF</div>
+            <div><strong>Gastón Ferreira</strong><span> · Estudiante</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <p>"Empecé de cero y con las sesiones individuales ya pude hacer mi primera importación. El acompañamiento hace toda la diferencia."</p>
+          <div class="testi-author">
+            <div class="testi-av" style="background:linear-gradient(135deg,#7c3aed,#3a8fd4)">DM</div>
+            <div><strong>Diego Morales</strong><span> · Contador</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <p>"Las mentorías grupales son muy dinámicas. Se aprende tanto de las dudas propias como de las de los otros participantes del grupo."</p>
+          <div class="testi-author">
+            <div class="testi-av" style="background:linear-gradient(135deg,#1a7f4b,#3a8fd4)">SR</div>
+            <div><strong>Sofía Ramos</strong><span> · Importadora</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="mentor-profile">
+        <div class="mentor-avatar">JM</div>
+        <h4>Equipo de mentores</h4>
+        <p>Expertos en comercio exterior con más de 10 años de experiencia operativa</p>
+        <button class="btn-contact">💬 Consultar por WhatsApp</button>
+      </div>
+
+      <h3>Mi mentoría activa</h3>
+      <ul class="sidebar-list">
+        <li><span>🎯 Pack 1 a 1 — 2/4 sesiones</span></li>
+        <li><span>📅 Próxima: Lun 20 Ene 19hs</span></li>
+        <li><span>🎥 Grabaciones: 2 disponibles</span></li>
+      </ul>
+
+      <hr class="divider">
+
+      <h3>Preguntas frecuentes</h3>
+      <ul class="sidebar-list">
+        <li><a href="#">¿Cómo agendo mi sesión?</a></li>
+        <li><a href="#">¿Puedo cambiar el horario?</a></li>
+        <li><a href="#">¿Qué plataforma se usa?</a></li>
+        <li><a href="#">¿Hay certificado?</a></li>
+      </ul>
+
+      <hr class="divider">
+
+      <h3>¿Dudas antes de empezar?</h3>
+      <button class="btn-contact" style="background:var(--navy-deep);color:white;border-radius:5px;padding:10px;width:100%;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;border:none">
+        Hablar con un asesor →
+      </button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="#">Inicio</a> · <a href="#">Contacto</a> · <a href="#">Términos</a>
+    <p style="margin-top:5px">© 2025 365aprendoComEx</p>
+  </div>
+</div>
+
+
+<script>
+// ── Screen navigation
+function goTo(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.proto-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('s' + n).classList.add('active');
+  document.querySelectorAll('.proto-btn')[n - 1].classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ── Tab navigation (Comunidad)
+function switchTab(btn, panelId) {
+  const tabBar = btn.closest('.tab-bar');
+  tabBar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const contentArea = tabBar.closest('.content-area');
+  contentArea.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(panelId).classList.add('active');
+}
+
+// ── Slider logic
+const sliderState = {};
+
+function getSlides(sliderId) {
+  const container = document.getElementById(sliderId);
+  if (!container) return { slides: [], dots: [] };
+  return {
+    slides: container.querySelectorAll('.slide'),
+    dots: container.querySelectorAll('.dot')
+  };
+}
+
+function setSlide(idx, sliderId) {
+  const { slides, dots } = getSlides(sliderId);
+  if (!slides.length) return;
+  const total = slides.length;
+  sliderState[sliderId] = ((idx % total) + total) % total;
+  slides.forEach((s, i) => s.classList.toggle('show', i === sliderState[sliderId]));
+  dots.forEach((d, i) => d.classList.toggle('active', i === sliderState[sliderId]));
+}
+
+function changeSlide(dir, sliderId) {
+  const current = sliderState[sliderId] || 0;
+  setSlide(current + dir, sliderId);
+}
+
+// Auto-advance
+setInterval(() => {
+  const active = document.querySelector('.screen.active');
+  if (!active) return;
+  const slider = active.querySelector('[id^="slider"]');
+  if (slider) changeSlide(1, slider.id);
+}, 4500);
+</script>
+</body>
+</html>
